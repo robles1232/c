@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Facades\DB;
 
 class Modulo extends Model
 {
@@ -96,5 +97,47 @@ class Modulo extends Model
         if($query)
             return true;
         return false;
+    }
+
+    public function menu(){
+        $modulos = static::accesoSubmodulos()->selectRaw('id, descripcion, icono')->orderBy('orden')->get();
+        $menus = [];
+
+        foreach ($modulos as $item) {
+            if($item->submodulos->count()){
+                $value            = [];
+                $value['text']    = $item->descripcion;
+                $value['icono']   = $item->icono;
+                $value['submenu'] = $item->getSubmodulo($item->submodulos);
+                $menus[]          = $value;
+            }
+        }
+        return $menus;
+    }
+
+    public function scopeAccesoSubmodulos($query){
+        
+        $data = DB::table('model_has_roles')->where('model_id', auth()->user()->idempleado)->first();
+
+        $rol = [$data->role_id];
+
+        return $query->with(['submodulos' => function($q) use ($rol){
+            $q->join('accesos', 'accesos.idsubmodulo', '=', 'submodulos.id');
+            $q->whereIn('accesos.idrol', $rol);
+            $q->whereNull('accesos.deleted_at');
+            $q->orderBy('submodulos.orden');
+        }]);
+    }
+
+    public function getSubmodulo($submodulos){
+        return collect($submodulos)
+            ->map(function($item) use ($submodulos){
+                $value            = [];
+                $value['id']      = $item->id;
+                $value['text']    = $item->descripcion;
+                $value['icon']    = $item->icon;
+                $value['url']     = $item->url;
+                return $value;
+            })->values()->all();
     }
 }

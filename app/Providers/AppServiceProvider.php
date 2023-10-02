@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\Funcion;
+use App\Models\Modulo;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -23,6 +26,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        View::composer(['layouts.sidebar'], function($view){
+            $view->with('menu', (new Modulo)->menu());
+        });
+
+        View::composer(['layouts.botones'], function($view){
+            $view->with('funcion', Funcion::where('boton', true)->orderBy('orden')->get());
+        });
     }
 }

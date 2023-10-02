@@ -330,7 +330,7 @@ class DatabaseSeeder extends Seeder
         $user->idempleado = $empleado->id;
         $user->idrol = $role->id;
         $user->user = 'admin';
-        $user->password = Hash::make('11111111');
+        $user->password = Hash::make('admin');
         $user->save();
         //$user->assignRole($role);
 

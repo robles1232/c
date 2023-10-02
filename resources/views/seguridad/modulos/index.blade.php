@@ -16,11 +16,7 @@
                 <!--END ACTUALIZAR -->
                 <div class="card-options card_options">
                     <div class="btn-list">
-                        <!-- START Botones-->
-                        <a href="#" id="btn-create" data-controller="" class="btn btn-outline-primary" ><i class="fe fe-plus-circle bt_grilla text-primary-shadow"></i> Nuevo</a>
-                        <a href="#" id="btn-edit" data-controller="" class="btn btn-outline-warning" ><i class="fe fe-plus-circle bt_grilla text-warning-shadow"></i> Editar</a>
-                        <a href="#" id="btn-destroy" data-controller="" data-action="eliminar" class="btn btn-outline-default" ><i class="fe fe-plus-circle bt_grilla text-warning-shadow"></i> Elim/Rest</a>
-                        <!-- END Botones-->
+                        @include('layouts.botones',['$dir_submodulo' => "$dir_submodulo"])
                     </div>
                 </div>
             </div>
