@@ -1,0 +1,18 @@
+table.dataTable tbody tr.selected {
+    background-color: #9DACFF;
+    color: #000000;
+}
+
+.btn_add button {
+    margin-top: 10px;
+    height: 80%;
+    width: 100%;
+    padding: 0px;
+}
+
+.btn_add i {
+    font-size: 16px;
+    padding: 0;
+    top: 2px;
+    position: relative;
+}
