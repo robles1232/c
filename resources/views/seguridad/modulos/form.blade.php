@@ -51,5 +51,5 @@
 	data_form = @json($data);
 </script>
 <script src='{{asset("js/views/$dir_modulo/$dir_submodulo/script.js")}}'></script>
-<!--<script src='{{asset("js/custom.js")}}'></script>
 <script src="{{asset('js/form-elements.js')}}"></script>-->
+<!--<script src='{{asset("js/custom.js")}}'></script>

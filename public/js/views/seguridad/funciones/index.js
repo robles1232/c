@@ -1,3 +1,4 @@
+let msj_modulo = "Funciones"
 $(document).ready(function() {
     load_datatable()
 })

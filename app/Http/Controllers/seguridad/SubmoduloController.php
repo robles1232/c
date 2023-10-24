@@ -8,6 +8,8 @@ use App\Models\Modulo;
 use App\Models\Submodulo;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\DB;
 
 
 class SubmoduloController extends Controller
@@ -75,29 +77,51 @@ class SubmoduloController extends Controller
 
     public function store(Request $request)
     {
-        
-        $obj = Submodulo::withTrashed()->find($request->id);
-        if(empty($obj)){
-            $obj = new Submodulo();
-        }
-        $obj->fill($request->all());
-        $obj->save();
+        $this->validate($request, [
+            'idmodulo' => 'required',
+            'descripcion' => 'required',
+            'abreviatura'     => 'required',
+            'url'       => 'required',
+            'icono'       => 'required',
+            'orden'       => 'required|integer',
+        ], [
+            'idmodulo.required' => 'Debes seleccionar el módulo',
+            'descripcion.required' => 'Debes escribir el nombre del submódulo',
+            'abreviatura.required'     => 'Debes escribir la abreviatura',
+            'url.required'       => 'Debes escribir la url',
+            'icono.required'       => 'Debes escribir el ícono',
+            'orden.required'       => 'Debes escribir el orden',
+            'orden.integer'        => 'Debe ser un número entero',
+        ]);
 
-        foreach ($request->funciones as $key => $value) {
-            if($key == 0)
-                FuncionSubmodulo::where('idsubmodulo', $obj->id)->delete();
+        return DB::transaction(function() use ($request){
+            $obj = Submodulo::withTrashed()->find($request->id);
+            if(empty($obj)){
+                $obj = new Submodulo();
+            }
+            $obj->fill($request->all());
+            $obj->save();
             
-            $obj2 = FuncionSubmodulo::withTrashed()->find($value["id"]);
-            if(empty($obj2)){
-                $obj2 = new FuncionSubmodulo();
+            if(empty($request->funciones)){
+                throw ValidationException::withMessages(["funciones" => "Debes seleccionar las funciones del submódulo"]);
             }
 
-            $obj2->fill($value);
-            $obj2->idsubmodulo = $obj->id;
-            $obj2->deleted_at = null;
-            $obj2->save();
-        }
-        return response()->json($obj);
+            foreach ($request->funciones as $key => $value) {
+                if($key == 0)
+                    FuncionSubmodulo::where('idsubmodulo', $obj->id)->delete();
+                
+                $obj2 = FuncionSubmodulo::withTrashed()->find($value["id"]);
+                if(empty($obj2)){
+                    $obj2 = new FuncionSubmodulo();
+                }
+    
+                $obj2->fill($value);
+                $obj2->idsubmodulo = $obj->id;
+                $obj2->deleted_at = null;
+                $obj2->save();
+            }
+            return response()->json($obj);
+        });
     }
 
     public function edit($id)

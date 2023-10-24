@@ -19,12 +19,15 @@
 
 						<div class="col-sm-6">
 							<label for="{{$prefix}}_idmodulo" class="col-form-label">Módulo</label>
-							<select name="idmodulo" id="{{$prefix}}_idmodulo" class="form-control">
-								<option label="Seleccione el módulo"></option>
-								@foreach($modulos as $modulo)
-								<option value="{{$modulo->id}}">{{$modulo->descripcion}}</option>
-								@endforeach
-							</select>
+
+							<div class="select2-{{$prefix}}_idmodulo">
+								<select name="idmodulo" id="{{$prefix}}_idmodulo" class="form-control select2">
+									<option label="Seleccione el módulo"></option>
+									@foreach($modulos as $modulo)
+									<option value="{{$modulo->id}}">{{$modulo->descripcion}}</option>
+									@endforeach
+								</select>
+							</div>
 						</div>
 
 						<div class="col-sm-6">
@@ -53,8 +56,10 @@
 						</div>
 
 						<div class="col-md-12 d-flex">
-							<div style="width: 85%;">
-								<select name="idfuncion" id="{{$prefix}}_idfuncion" class="form-control">
+							<label for="{{$prefix}}_funcion">Funciones</label><br>
+
+							<div class="select2-{{$prefix}}_idfuncion" style="width: 85%;">
+								<select name="idfuncion" id="{{$prefix}}_idfuncion" class="form-control form-control-sm  select2">
 									<option label="Selecciona la Función"></option>
 									@foreach($funciones as $funcion)
 									<option value="{{$funcion->id}}">{{$funcion->descripcion}}</option>
@@ -117,5 +122,5 @@
 	data_form = @json($data);
 </script>
 <script src='{{asset("js/views/$dir_modulo/$dir_submodulo/script.js")}}'></script>
-<!--<script src='{{asset("js/custom.js")}}'></script>
 <script src="{{asset('js/form-elements.js')}}"></script>-->
+<!--<script src='{{asset("js/custom.js")}}'></script>

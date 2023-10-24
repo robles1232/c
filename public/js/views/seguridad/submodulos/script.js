@@ -1,3 +1,15 @@
+$("#form-"+_dir_submodulo_seguridad_submodulos).on('focus', '.is_invalid', function(e){
+    e.preventDefault()
+    toastr.remove();
+    toastr.error($(this).data('invalid'), msj_modulo)
+})
+
+$("#form-"+_dir_submodulo_seguridad_submodulos).on('click', '.select2-is_invalid', function(e){
+    e.preventDefault()
+    toastr.remove();
+    toastr.error($(this).data('invalid'), msj_modulo)
+})
+
 var array_funciones = [];
 /*tippy('#btn_add_funcion button:nth-child(1)', {
     content: "Agregar"

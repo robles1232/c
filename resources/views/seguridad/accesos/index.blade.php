@@ -21,14 +21,17 @@
                     </div>
                     <form id="form-{{$dir_submodulo}}" onsubmit="guardar_accesos(event)">
                     <div class="card-body">
-                        <div class="col-sm-12 col-lg-12">
+                        <div class="col-md-12 col-lg-12">
                             <label for="{{$prefix}}_idrol" class="col-form-label">Rol</label>
-                            <select name="idrol" id="{{$prefix}}_idrol" class="form-control">
-                                <option label="Seleccionar el rol"></option>
-                                @foreach($roles as $rol)
-                                <option value="{{$rol->id}}">{{$rol->name}}</option>
-                                @endforeach
-                            </select>
+
+                            <div class="select2-{{$prefix}}_idrol">
+                                <select name="idrol" id="{{$prefix}}_idrol" class="form-control select2">
+                                    <option label="Seleccionar el rol"></option>
+                                    @foreach($roles as $rol)
+                                    <option value="{{$rol->id}}">{{$rol->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
                     </div>
                     <div class="card-footer border-0 pt-0">
@@ -61,6 +64,7 @@
     let _prefix_{{$path_controller}}            = "{{$prefix}}"
 </script>
 
+<script src="{{asset('js/form-elements.js')}}"></script>
 <script src='{{asset("js/views/$dir_modulo/$dir_submodulo/index.js")}}'></script>
 <script src='{{asset("js/views/$dir_modulo/$dir_submodulo/form.js")}}'></script>
 @endsection

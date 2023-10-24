@@ -18,8 +18,16 @@
     <!-- JSTREE -->
     <script src="plugins/jstree/jstree.min.js"></script>
 
+    <!-- Alertas -->
+    <script src="plugins/toastr/toastr.min.js"></script>
+    <!--<script src="js/alertas_jc.js"></script>   -->
+    <script src="plugins/sweet-alert/sweetalert.min.js"></script>
+
     <!-- MyJs-->
     <script src="js/myModals.js"></script>
+    <!-- SELECT2 -->
+    <script src="plugins/select2/select2.full.min.js"></script>
+
     <!--DataTAble-->
     <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-    @yield('script')
+@yield('script')

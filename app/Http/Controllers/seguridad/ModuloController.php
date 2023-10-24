@@ -7,6 +7,7 @@ use App\Models\Modulo;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use App\Models\Funcion;
+use Illuminate\Support\Facades\DB;
 
 class ModuloController extends Controller
 {
@@ -71,13 +72,28 @@ class ModuloController extends Controller
 
     public function store(Request $request)
     {
-        $obj = Modulo::withTrashed()->find($request->id);
-        if(empty($obj)){
-            $obj = new Modulo();
-        }
-        $obj->fill($request->all());
-        $obj->save();
-        return response()->json($obj);
+        $this->validate($request, [
+            'descripcion' => 'required',
+            'abreviatura'     => 'required',
+            'icono'       => 'required',
+            'orden'       => 'required|integer',
+        ], [
+            'descripcion.required' => 'Debes escribir el nombre del módulo',
+            'abreviatura.required'     => 'Debes escribir la abreviatura',
+            'icono.required'       => 'Debes escribir el ícono',
+            'orden.required'       => 'Debes escribir el orden',
+            'orden.integer'        => 'Debe ser un número entero',
+        ]);
+
+        return DB::transaction(function() use ($request){
+            $obj = Modulo::withTrashed()->find($request->id);
+            if(empty($obj)){
+                $obj = new Modulo();
+            }
+            $obj->fill($request->all());
+            $obj->save();
+            return response()->json($obj);
+        });
     }
 
     public function edit($id)

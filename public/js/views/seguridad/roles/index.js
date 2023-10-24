@@ -1,4 +1,5 @@
-let msj_modulo_ = "Módulo Funciones"
+let msj_modulo = "Roles"
+
 $(document).ready(function() {
     load_datatable()
 })

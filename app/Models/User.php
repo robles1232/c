@@ -13,7 +13,7 @@ use Spatie\Permission\Models\Role;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles, SoftDeletes;
+    use HasRoles, SoftDeletes;
 
     protected $fillable = [
         'idempleado',

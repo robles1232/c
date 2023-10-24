@@ -7,6 +7,9 @@ use App\Models\Empleado;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use App\Models\Funcion;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 
 
 class EmpleadoController extends Controller
@@ -72,16 +75,39 @@ class EmpleadoController extends Controller
 
     public function store(Request $request)
     {
-        
-        $obj = Empleado::withTrashed()->find($request->id);
-        if(empty($obj)){
-            $obj = new Empleado();
-        }
-        $obj->fill($request->all());
-        $obj->nombre_completo = $obj->nombres." ".$obj->apellido_paterno." ".$obj->apellido_materno;
-        $obj->save();
+        $this->validate($request, [
+            'dni' => ['required', 'numeric', 'digits:8', Rule::unique("{$this->driver_current}.{$this->model->getTableName()}", "dni")->ignore($request->id, "id")],
+            'apellido_paterno' => 'required',
+            'apellido_materno'     => 'required',
+            'nombres'       => 'required',
+            'email'       => ['required', 'email', Rule::unique("{$this->driver_current}.{$this->model->getTableName()}", "email")->ignore($request->id, "id")],
+            'telefono'       => ['required', 'numeric', 'digits:9', Rule::unique("{$this->driver_current}.{$this->model->getTableName()}", "telefono")->ignore($request->id, "id") ],
+        ], [
+            'dni.required' => 'Debes escribir el DNI',
+            'dni.numeric' => 'El DNI debe ser un número',
+            'dni.digits' => 'El DNI debe tener 8 dígitos',
+            'dni.unique' => 'Este DNI ya está registrado',
+            'apellido_paterno.required' => 'Debes escribir el Apellido Paterno',
+            'apellido_materno.required' => 'Debes escribir el Apellido Materno',
+            'nombres.required'       => 'Debes escribir los nombres',
+            'email.required'       => 'Debes escribir el email',
+            'email.email'       => 'Debe tener el siguiente formato "ejemplo@gmail.com"',
+            'telefono.required'       => 'Debes escribir el Teléfono',
+            'telefono.numeric'       => 'El Teléfono debe ser un número',
+            'telefono.digits'       => 'El Teléfono debe tener 9 dígitos',
+        ]);
 
-        return response()->json($obj);
+        return DB::transaction(function() use ($request){
+            $obj = Empleado::withTrashed()->find($request->id);
+            if(empty($obj)){
+                $obj = new Empleado();
+            }
+            $obj->fill($request->all());
+            $obj->nombre_completo = $obj->nombres." ".$obj->apellido_paterno." ".$obj->apellido_materno;
+            $obj->save();
+    
+            return response()->json($obj);
+        });
     }
 
     public function edit($id)

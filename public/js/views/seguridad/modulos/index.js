@@ -2,6 +2,8 @@ $(document).ready(function() {
     load_datatable()
 })
 
+let msj_modulo = "Módulos"
+
 //------------------------------------------------------------- Datatable
 const load_datatable = () => {
     table = $('#dt-' + _dir_submodulo_seguridad_modulos).DataTable({

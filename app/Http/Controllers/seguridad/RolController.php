@@ -7,6 +7,8 @@ use Spatie\Permission\Models\Role;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use App\Models\Funcion;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\DB;
 
 class RolController extends Controller
 {
@@ -71,15 +73,22 @@ class RolController extends Controller
 
     public function store(Request $request)
     {
-        
-        $obj = Role::withTrashed()->find($request->id);
-        if(empty($obj)){
-            $obj = new Role();
-        }
-        $obj->fill($request->all());
-        $obj->save();
+        $this->validate($request, [
+            'name' => 'required',
+        ], [
+            'name.required' => 'Escribe el nombre del rol',
+        ]);
 
-        return response()->json($obj);
+        return DB::transaction(function() use ($request){
+            $obj = Role::withTrashed()->find($request->id);
+            if(empty($obj)){
+                $obj = new Role();
+            }
+            $obj->fill($request->all());
+            $obj->save();
+    
+            return response()->json($obj);
+        });
     }
 
     public function edit($id)

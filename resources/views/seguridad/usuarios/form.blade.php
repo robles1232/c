@@ -17,31 +17,44 @@
 
 					<div class="form-group form-row">
 
-						<div class="col-sm-6">
+						<div class="col-md-6 col-lg-6">
 							<label for="{{$prefix}}_idempleado" class="col-form-label">Empleado</label>
-							<select name="idempleado" id="{{$prefix}}_idempleado" class="form-control">
-								<option label="Selecciona el Empleado"></option>
-								@foreach($empleados as $empleado)
-									<option value="{{$empleado->id}}">{{$empleado->nombre_completo}}</option>
-								@endforeach
-							</select>
-							
+
+							<div class="select2-{{$prefix}}_idempleado">
+								<select name="idempleado" id="{{$prefix}}_idempleado" class="select2 form-control">
+									<option label="Selecciona el Empleado"></option>
+									@foreach($empleados as $empleado)
+										<option value="{{$empleado->id}}">{{$empleado->nombre_completo}}</option>
+									@endforeach
+								</select>
+							</div>
 						</div>
 
-						<div class="col-sm-6">
-							<label for="{{$prefix}}_idrol" class="col-form-label">Empleado</label>
-							<select name="idrol" id="{{$prefix}}_idrol" class="form-control">
-								<option label="Selecciona el Rol"></option>
-								@foreach($roles as $rol)
-									<option value="{{$rol->id}}">{{$rol->name}}</option>
-								@endforeach
-							</select>
-							
+						<div class="col-md-6">
+							<label for="{{$prefix}}_idrol" class="col-form-label">Rol</label>
+							<div class="select2-{{$prefix}}_idrol">
+								<select name="idrol" id="{{$prefix}}_idrol" class="form-control select2" required>
+									<option label="Selecciona el Rol"></option>
+									@foreach($roles as $rol)
+										<option value="{{$rol->id}}">{{$rol->name}}</option>
+									@endforeach
+								</select>
+							</div>							
 						</div>
 
-						<div class="col-sm-6">
+						<div class="col-md-12">
 							<label for="{{$prefix}}_user" class="col-form-label">Usuario</label>
 							<input class="form-control form-control-sm" type="text" placeholder="Usuario" id="{{$prefix}}_user" name="user">
+						</div>
+
+						<div class="col-md-6">
+							<label for="{{$prefix}}_password" class="col-form-label">Contraseña</label>
+							<input class="form-control form-control-sm" type="password" placeholder="********" id="{{$prefix}}_password" name="password">
+						</div>
+
+						<div class="col-md-6">
+							<label for="{{$prefix}}_password_confirm" class="col-form-label">Confirma la Contraseña</label>
+							<input class="form-control form-control-sm" type="password" placeholder="********" id="{{$prefix}}_password_confirm" name="password_confirm">
 						</div>
 					</div>
 				</div>
@@ -56,6 +69,6 @@
 <script type="text/javascript">
 	data_form = @json($data);
 </script>
+<script src="{{asset('js/form-elements.js')}}"></script>
 <script src='{{asset("js/views/$dir_modulo/$dir_submodulo/script.js")}}'></script>
-<!--<script src='{{asset("js/custom.js")}}'></script>
-<script src="{{asset('js/form-elements.js')}}"></script>-->
+<!--<script src='{{asset("js/custom.js")}}'></script>-->

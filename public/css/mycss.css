@@ -16,3 +16,19 @@ table.dataTable tbody tr.selected {
     top: 2px;
     position: relative;
 }
+
+.is_invalid {
+    border-color: #ed314c !important;
+}
+
+.is_invalid:focus {
+    border-color: #ed314c !important;
+}
+
+.select2-is_invalid .select2-container--default .select2-selection--single {
+    border: 1px solid #ed314c !important;
+}
+
+.select2-is_invalid .select2-container--default.select2-container--open.select2-container--below .select2-selection--single {
+    border: 1px solid #ed314c !important;
+}

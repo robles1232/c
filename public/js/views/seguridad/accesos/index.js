@@ -1,4 +1,4 @@
-let msj_modulo_ = "Módulo Accesos"
+let msj_modulo = "Accesos"
 var __jstree = ""
 
 $("#"+_prefix_seguridad_accesos+"_idrol").on("change", function(e){

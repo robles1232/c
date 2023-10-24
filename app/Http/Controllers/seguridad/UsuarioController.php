@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 use Yajra\DataTables\DataTables;
 use App\Models\Funcion;
+use Illuminate\Validation\Rules\Password;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\DB;
 
 
 class UsuarioController extends Controller
@@ -75,18 +78,52 @@ class UsuarioController extends Controller
     }
 
     public function store(Request $request)
-    {
-        
-        $obj = User::withTrashed()->find($request->id);
-        $empleado = Empleado::find($request->idempleado);
-        if(empty($obj)){
-            $obj = new User();
-            $obj->password = Hash::make($empleado->dni);
-        }
-        $obj->fill($request->all());
-        $obj->save();
+    {   
+        $this->validate($request, [
+            'idempleado' => 'required',
+            'idrol'     => 'required',
+            'user'       => 'required',
+            'password'       => [
+                Password::min(8)
+                    ->mixedCase()
+                    ->letters()
+                    ->numbers()
+                    ->symbols()
+                ],
+            'password_confirm'       => 'required',
+        ], [
+            'idempleado.required' => 'Debes seleccionar el empleado',
+            'idrol.required'     => 'Debes seleccionar el rol',
+            'user.required'       => 'Debes escribir el usuario',
+            'user.unique'       => 'Este usuario ya está en uso',
+            'password.required'       => 'Debes escribir la contraseña',
+            'password.min'       => 'La contraseña debe terner mínimo 8 caracteres',
+            'password_confirm.required' => 'Debes escribir la confirmación de la contraseña',
+        ]);
+    
+        return DB::transaction(function() use ($request){
+            if(User::where('idempleado', $request->idempleado)->where('id', '!=', $request->id)->first()){
+                throw ValidationException::withMessages(["idempleado" => "Este empleado ya tiene un usuario asignado"]);
+            }
 
-        return response()->json($obj);
+            if(User::where('user', $request->user)->where('id', '!=', $request->id)->first()){
+                throw ValidationException::withMessages(["user" => "Este ya se encuentra registrado"]);
+            }
+
+            if($request->password != $request->password_confirm){
+                throw ValidationException::withMessages(["password_confirm" => "Las contraseñas deben coincidir"]);
+            }
+
+            $obj = User::withTrashed()->find($request->id);
+            if(empty($obj)){
+                $obj = new User();
+            }
+            $obj->password = Hash::make($request->password);
+            $obj->fill($request->all());
+            $obj->save();
+    
+            return response()->json($obj);
+        });
     }
 
     public function edit($id)

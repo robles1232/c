@@ -419,16 +419,14 @@ const set_icono = (_key, _icono, _paht) => {
 const limpieza = (_paht) => {
     id = "#form-" + _paht
 
-    $("#form-" + _paht + " .msj_error_exist").first().popover('hide');
-    $(id + " .msj_error").addClass("d-none");
-    $(id + " .msj_error_exist").removeClass("msj_error_exist");
+
     $(id + " input").removeClass("is_invalid");
+    $(id + " input").removeData();
     $(id + " textarea").removeClass("is_invalid");
+    $(id + " textarea").removeData();
     $(id + ' .select2-is_invalid').removeClass('select2-is_invalid');
-    $(id + ' .is_invalidfile').removeClass('is_invalidfile')
-    $(id + ' .is_invalidfile_dropzone').removeClass('is_invalidfile_dropzone')
-    $(id + ' .is_invalidfile-card').removeClass('is_invalidfile-card')
-    $(id + ' .is_invalidfile-uppy').removeClass('is_invalidfile-uppy')
+    $(id + ' .select2-is_invalid').removeData('select2-is_invalid');
+
 }
 
 const init_btndelete = () => {
@@ -501,6 +499,7 @@ function updateIndicator() {
         })
     }
 }
+
 
 window.addEventListener('online', updateIndicator)
 window.addEventListener('offline', updateIndicator)

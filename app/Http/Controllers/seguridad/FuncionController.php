@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Funcion;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\DB;
 
 
 class FuncionController extends Controller
@@ -72,13 +73,33 @@ class FuncionController extends Controller
 
     public function store(Request $request)
     {
-        $obj = Funcion::withTrashed()->find($request->id);
-        if(empty($obj)){
-            $obj = new Funcion();
-        }
-        $obj->fill($request->all());
-        $obj->save();
-        return response()->json($obj);
+        $this->validate($request, [
+            'descripcion' => 'required',
+            'funcion'     => 'required',
+            'clase'       => 'required',
+            'icono'       => 'required',
+            'orden'       => 'required|integer',
+            'boton'       => 'required',
+        ], [
+            'descripcion.required' => 'Debes escribir el nombre de la función',
+            'funcion.required'     => 'Debes escribir la función',
+            'clase.required'       => 'Debes escribir la clase',
+            'icono.required'       => 'Debes escribir el ícono',
+            'orden.required'       => 'Debes escribir el orden',
+            'orden.integer'        => 'Debe ser un número entero',
+            'boton.required'       => 'Debes seleccionar si es un botón',
+        ]);
+
+        return DB::transaction(function() use ($request){
+            $obj = Funcion::withTrashed()->find($request->id);
+            if(empty($obj)){
+                $obj = new Funcion();
+            }
+            $obj->fill($request->all());
+            $obj->save();
+
+            return response()->json($obj);
+        });
     }
 
     public function edit($id)
