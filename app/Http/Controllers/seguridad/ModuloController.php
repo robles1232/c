@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\seguridad;
 use App\Http\Controllers\Controller;
 
-use App\Models\Modulo;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
-use App\Models\Funcion;
 use Illuminate\Support\Facades\DB;
+
+use App\Models\seguridad\Funcion;
+use App\Models\seguridad\Modulo;
 
 class ModuloController extends Controller
 {

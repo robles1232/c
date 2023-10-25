@@ -1,18 +1,19 @@
 <?php
 
 namespace App\Http\Controllers\seguridad;
+
 use App\Http\Controllers\Controller;
-use App\Models\Empleado;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Spatie\Permission\Models\Role;
 use Yajra\DataTables\DataTables;
-use App\Models\Funcion;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\DB;
 
+use App\Models\User;
+use App\Models\seguridad\Empleado;
+use App\Models\seguridad\Funcion;
+use Spatie\Permission\Models\Role;
 
 class UsuarioController extends Controller
 {

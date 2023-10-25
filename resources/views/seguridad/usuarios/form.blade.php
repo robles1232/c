@@ -22,7 +22,7 @@
 
 							<div class="select2-{{$prefix}}_idempleado">
 								<select name="idempleado" id="{{$prefix}}_idempleado" class="select2 form-control">
-									<option label="Selecciona el Empleado"></option>
+									<option label="Selecciona el Empleado">''''''''''''''''''''''''''''''''''</option>
 									@foreach($empleados as $empleado)
 										<option value="{{$empleado->id}}">{{$empleado->nombre_completo}}</option>
 									@endforeach

@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\seguridad;
 use App\Http\Controllers\Controller;
 
-use App\Models\Empleado;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
-use App\Models\Funcion;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
+use App\Models\seguridad\Funcion;
+use App\Models\seguridad\Empleado;
 
 class EmpleadoController extends Controller
 {

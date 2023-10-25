@@ -3,16 +3,17 @@
 namespace App\Http\Controllers\seguridad;
 use App\Http\Controllers\Controller;
 
-use App\Models\Accesos;
-use App\Models\Funcion;
-use App\Models\Modulo;
-use App\Models\Submodulo;
+use Yajra\DataTables\DataTables;
 use Dotenv\Exception\ValidationException;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
-use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
+
+use App\Models\seguridad\Accesos;
+use App\Models\seguridad\Funcion;
+use App\Models\seguridad\Modulo;
+use App\Models\seguridad\Submodulo;
 
 class AccesosController extends Controller
 {

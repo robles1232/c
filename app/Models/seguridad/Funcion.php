@@ -1,23 +1,24 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\seguridad;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Spatie\Permission\Models\Permission;
 
-class Proveedor extends Model
+class Funcion extends Model
 {
     use SoftDeletes;
 
-    protected $table        = "proveedores";
+    protected $table        = "funciones";
     protected $primaryKey   = "id";
 
     protected $fillable = [
         'descripcion',
-        'ruc',
-        'direccion',
-        'telefono',
+        'funcion',
+        'clase',
+        'icono',
+        'orden',
+        'boton',
         'deleted_at'
     ];
 

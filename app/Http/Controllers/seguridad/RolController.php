@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\seguridad;
 use App\Http\Controllers\Controller;
 
-use Spatie\Permission\Models\Role;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
-use App\Models\Funcion;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\DB;
+
+use App\Models\seguridad\Funcion;
+use Spatie\Permission\Models\Role;
 
 class RolController extends Controller
 {

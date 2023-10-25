@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\seguridad;
 use App\Http\Controllers\Controller;
 
-use App\Models\Funcion;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
+
+use App\Models\seguridad\Funcion;
 
 
 class FuncionController extends Controller

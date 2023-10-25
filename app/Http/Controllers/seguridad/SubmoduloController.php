@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers\seguridad;
 use App\Http\Controllers\Controller;
-use App\Models\Funcion;
-use App\Models\FuncionSubmodulo;
-use App\Models\Modulo;
-use App\Models\Submodulo;
+
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\DB;
+
+use App\Models\seguridad\Funcion;
+use App\Models\seguridad\FuncionSubmodulo;
+use App\Models\seguridad\Modulo;
+use App\Models\seguridad\Submodulo;
 
 
 class SubmoduloController extends Controller
