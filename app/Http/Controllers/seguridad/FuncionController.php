@@ -97,6 +97,10 @@ class FuncionController extends Controller
                 $obj = new Funcion();
             }
             $obj->fill($request->all());
+            $obj->boton = true;
+            if($request->boton == 2){
+                $obj->boton = false;
+            }
             $obj->save();
 
             return response()->json($obj);

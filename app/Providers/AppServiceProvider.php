@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Models\Funcion;
-use App\Models\Modulo;
+use App\Models\seguridad\Funcion;
+use App\Models\seguridad\Modulo;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
