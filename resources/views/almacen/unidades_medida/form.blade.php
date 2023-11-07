@@ -17,14 +17,14 @@
 
 					<div class="form-group form-row">
 
-						<div class="col-sm-6">
-							<label for="{{$prefix}}_unidad" class="col-form-label">Unidad</label>
-							<input class="form-control form-control-sm" type="text" placeholder="Unidad" id="{{$prefix}}_unidad" name="unidad">
+						<div class="col-md-6">
+							<label for="{{$prefix}}_descripcion" class="col-form-label">Nombre</label>
+							<input class="form-control form-control-sm" type="text" placeholder="Nombre de la Unidad" id="{{$prefix}}_descripcion" name="descripcion">
 						</div>
 
-						<div class="col-sm-6">
-							<label for="{{$prefix}}_desagregado" class="col-form-label">Desagregado</label>
-							<input class="form-control form-control-sm" type="text" placeholder="Desagregado" id="{{$prefix}}_desagregado" name="desagregado">
+						<div class="col-md-6">
+							<label for="{{$prefix}}_abreviatura" class="col-form-label">Abreviatura</label>
+							<input class="form-control form-control-sm" type="text" placeholder="Abreviatura de la Unidad" id="{{$prefix}}_abreviatura" name="abreviatura">
 						</div>
 					</div>
 				</div>
@@ -40,5 +40,5 @@
 	data_form = @json($data);
 </script>
 <script src='{{asset("js/views/$dir_modulo/$dir_submodulo/script.js")}}'></script>
-<!--<script src='{{asset("js/custom.js")}}'></script>
-<script src="{{asset('js/form-elements.js')}}"></script>-->
+<script src="{{asset('js/form-elements.js')}}"></script>
+<!--<script src='{{asset("js/custom.js")}}'></script>-->

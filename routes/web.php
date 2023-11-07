@@ -11,18 +11,11 @@ use App\Http\Controllers\seguridad\SubmoduloController;
 use App\Http\Controllers\seguridad\UsuarioController;
 
 use App\Http\Controllers\almacen\UnidadesMedidaController;
+use App\Http\Controllers\almacen\TiposProductoController;
+use App\Http\Controllers\almacen\MarcasController;
 use App\Http\Controllers\almacen\ProveedorController;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+use App\Http\Controllers\almacen\ProductosController;
+use App\Http\Controllers\almacen\ComprasController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -66,7 +59,25 @@ Route::group(['middleware' => ['auth']], function(){
     Route::resource('unidades_medida', UnidadesMedidaController::class)->only('index', 'create', 'store', 'edit', 'destroy');
     Route::get('unidades_medida/grilla/', [UnidadesMedidaController::class, 'grilla'])->name('unidades_medida.grilla');
 
+    Route::resource('tipos_producto', TiposProductoController::class)->only('index', 'create', 'store', 'edit', 'destroy');
+    Route::get('tipos_producto/grilla/', [TiposProductoController::class, 'grilla'])->name('tipos_producto.grilla');
+    Route::get('tipos_producto/getCategoria/{idtipo_producto}', [TiposProductoController::class, 'getCategoria'])->name('tipos_producto.getCategoria');
+
+    /** ------------- ALMACEN-MARCAS */
+    Route::resource('marcas', MarcasController::class)->only('index', 'create', 'store', 'edit', 'destroy');
+    Route::get('marcas/grilla/', [MarcasController::class, 'grilla'])->name('marcas.grilla');
+
     /** ------------- ALMACEN-PROVEDORES */
     Route::resource('proveedores', ProveedorController::class)->only('index', 'create', 'store', 'edit', 'destroy');
     Route::get('proveedores/grilla/', [ProveedorController::class, 'grilla'])->name('proveedores.grilla');
+    Route::get('proveedores/buscar/{search}', [ProveedorController::class, 'buscar'])->name('proveedores.buscar');
+
+    /** ------------- ALMACEN-PRODUCTOS */
+    Route::resource('productos', ProductosController::class)->only('index', 'create', 'store', 'edit', 'destroy');
+    Route::get('productos/grilla/', [ProductosController::class, 'grilla'])->name('productos.grilla');
+    Route::get('productos/buscar/{search}', [ProductosController::class, 'buscar'])->name('productos.buscar');
+
+    /** ------------- ALMACEN-COMPRAS */
+    Route::resource('compras', ComprasController::class)->only('index', 'create', 'store', 'edit', 'destroy');
+    Route::get('compras/grilla/', [ComprasController::class, 'grilla'])->name('compras.grilla');
 });

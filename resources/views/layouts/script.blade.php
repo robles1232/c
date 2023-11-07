@@ -28,6 +28,13 @@
     <!-- SELECT2 -->
     <script src="plugins/select2/select2.full.min.js"></script>
 
+    <!-- carga -->
+    <script src="plugins/waitme/waitMe.min.js"></script>
+
+    <!-- Autocomplete -->
+    <script src="plugins/autocomplete/autocomplete.min.js"></script>
+
+
     <!--DataTAble-->
     <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 @yield('script')

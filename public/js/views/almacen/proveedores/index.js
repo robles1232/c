@@ -1,4 +1,4 @@
-let msj_modulo_ = "Módulo Unidades de Medida"
+let msj_modulo = "Proveedores"
 $(document).ready(function() {
     load_datatable()
 })
@@ -13,10 +13,26 @@ const load_datatable = () => {
                 searchable: false,
                 className: "text-center"
             },
-            {data: 'descripcion'},
-            {data: 'ruc'},
-            {data: 'direccion'},
-            {data: 'telefono'},
+            {
+                data: 'descripcion',
+                orderable: true,
+                searchable: true,
+            },
+            {
+                data: 'ruc',
+                orderable: true,
+                searchable: true,
+            },
+            {
+                data: 'direccion',
+                orderable: true,
+                searchable: true,
+            },
+            {
+                data: 'telefono',
+                orderable: true,
+                searchable: true,
+            },
             {
                 data: 'activo',
                 orderable: false,

@@ -4,7 +4,6 @@ namespace App\Models\almacen;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Spatie\Permission\Models\Permission;
 
 class Proveedor extends Model
 {

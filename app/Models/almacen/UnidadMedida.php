@@ -13,8 +13,9 @@ class UnidadMedida extends Model
     protected $primaryKey   = "id";
 
     protected $fillable = [
+        'descripcion',
+        'abreviatura',
         'unidad',
-        'desagregado',
         'deleted_at'
     ];
 

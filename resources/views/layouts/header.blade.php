@@ -33,6 +33,12 @@
     <!-- Jstree -->
     <link rel="stylesheet" href="plugins/jstree/themes/default/style.css">
 
+    <!-- carga -->
+    <link href="plugins/waitme/waitMe.min.css" rel="stylesheet"></link>
+
+    <!-- carga -->
+    <link href="plugins/autocomplete/style.css" rel="stylesheet"></link>
+
     <!--DATATABLE-->
     <link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
 </head>

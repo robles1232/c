@@ -15,8 +15,8 @@ class CreateTableUnidadesMedida extends Migration
     {
         Schema::create('unidades_medida', function (Blueprint $table) {
             $table->id();
-            $table->string('unidad');
-            $table->string('desagregado');
+            $table->string('descripcion');
+            $table->string('abreviatura');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -310,7 +310,9 @@ const get_modal = (_paht, _prefix, funcion = "create", id = null, extra = null) 
                     if (key == "documento" || key == "logo") {
                         // aca falta
                     } else {
-                        $("#" + _prefix + "_" + key, "#form-" + _paht).val(val)
+                        if( val != null){
+                            $("#form-" + _paht+" #" + _prefix + "_" + key).val(val).trigger("change")
+                        }
                         if (key == "icono" | key == "icon")
                             set_icono(key, val, _paht)
                     }

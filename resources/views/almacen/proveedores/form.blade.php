@@ -17,22 +17,22 @@
 
 					<div class="form-group form-row">
 
-						<div class="col-sm-6">
+						<div class="col-md-6">
 							<label for="{{$prefix}}_descripcion" class="col-form-label">Proveedor</label>
 							<input class="form-control form-control-sm" type="text" placeholder="Proveedor" id="{{$prefix}}_descripcion" name="descripcion">
 						</div>
 
-						<div class="col-sm-6">
+						<div class="col-md-6">
 							<label for="{{$prefix}}_ruc" class="col-form-label">Ruc</label>
 							<input class="form-control form-control-sm" type="text" placeholder="Ruc" id="{{$prefix}}_ruc" name="ruc">
 						</div>
 
-						<div class="col-sm-6">
+						<div class="col-md-6">
 							<label for="{{$prefix}}_direccion" class="col-form-label">Dirección</label>
 							<input class="form-control form-control-sm" type="text" placeholder="Dirección" id="{{$prefix}}_direccion" name="direccion">
 						</div>
 
-						<div class="col-sm-6">
+						<div class="col-md-6">
 							<label for="{{$prefix}}_telefono" class="col-form-label">Teléfono</label>
 							<input class="form-control form-control-sm" type="text" placeholder="Teléfono" id="{{$prefix}}_telefono" name="telefono">
 						</div>
@@ -50,5 +50,5 @@
 	data_form = @json($data);
 </script>
 <script src='{{asset("js/views/$dir_modulo/$dir_submodulo/script.js")}}'></script>
-<!--<script src='{{asset("js/custom.js")}}'></script>
-<script src="{{asset('js/form-elements.js')}}"></script>-->
+<script src="{{asset('js/form-elements.js')}}"></script>
+<!--<script src='{{asset("js/custom.js")}}'></script>-->

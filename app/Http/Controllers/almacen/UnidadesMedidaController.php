@@ -1,13 +1,16 @@
 <?php
 
 namespace App\Http\Controllers\almacen;
-use App\Http\Controllers\Controller;
 
-use App\Models\UnidadMedida;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
-use App\Models\Funcion;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
+
+use App\Models\seguridad\Funcion;
+use App\Models\almacen\UnidadMedida;
 
 class UnidadesMedidaController extends Controller
 {
@@ -22,9 +25,9 @@ class UnidadesMedidaController extends Controller
 
     public function __construct()
     {   
-        /*foreach (Funcion::get() as $key => $value) {
+        foreach (Funcion::get() as $key => $value) {
             $this->middleware('permission:' . $value["funcion"].'-'.$this->dir_submodulo, ['only' => [$value["funcion"]]]);
-        }*/
+        }
 
         $this->path_controller = $this->dir_modulo."_".$this->dir_submodulo;
         $this->model = new UnidadMedida();
@@ -72,15 +75,25 @@ class UnidadesMedidaController extends Controller
 
     public function store(Request $request)
     {
-        
-        $obj = UnidadMedida::withTrashed()->find($request->id);
-        if(empty($obj)){
-            $obj = new UnidadMedida();
-        }
-        $obj->fill($request->all());
-        $obj->save();
+        $this->validate($request, [
+            'descripcion' => 'required',
+            'abreviatura'     => 'required',
+        ], [
+            'descripcion.required' => 'Debes escribir el nombre de la unidad de medida',
+            'abreviatura.required'  => 'Debes escribir la abreviatura de la unidad de medida',
+        ]);
 
-        return response()->json($obj);
+        return DB::transaction(function() use ($request){
+            $obj = UnidadMedida::withTrashed()->find($request->id);
+            if(empty($obj)){
+                $obj = new UnidadMedida();
+            }
+
+            $obj->fill($request->all());
+            $obj->save();
+    
+            return response()->json($obj);
+        });
     }
 
     public function edit($id)

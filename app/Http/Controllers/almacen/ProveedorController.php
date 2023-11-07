@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\almacen;
 use App\Http\Controllers\Controller;
 
-use App\Models\Proveedor;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
-use App\Models\Funcion;
+use Illuminate\Support\Facades\DB;
+
+use App\Models\seguridad\Funcion;
+use App\Models\almacen\Proveedor;
 
 
 class ProveedorController extends Controller
@@ -22,9 +24,9 @@ class ProveedorController extends Controller
 
     public function __construct()
     {   
-        /*foreach (Funcion::get() as $key => $value) {
+        foreach (Funcion::get() as $key => $value) {
             $this->middleware('permission:' . $value["funcion"].'-'.$this->dir_submodulo, ['only' => [$value["funcion"]]]);
-        }*/
+        }
 
         $this->path_controller = $this->dir_modulo."_".$this->dir_submodulo;
         $this->model = new Proveedor();
@@ -72,15 +74,29 @@ class ProveedorController extends Controller
 
     public function store(Request $request)
     {
-        
-        $obj = Proveedor::withTrashed()->find($request->id);
-        if(empty($obj)){
-            $obj = new Proveedor();
-        }
-        $obj->fill($request->all());
-        $obj->save();
-
-        return response()->json($obj);
+        $this->validate($request, [
+            'descripcion' => 'required',
+            'ruc' => 'required|integer|digits:11',
+            'direccion' => 'required',
+            'telefono' => 'required',
+        ], [
+            'descripcion.required' => 'Debes escribir la Razón social del Proveedor',
+            'ruc.required' => 'Debes escribir el ruc del proveedor',
+            'ruc.integer' => 'El ruc debe ser un número de 11 dígitos',
+            'ruc.digits' => 'El ruc debe ser un número de 11 dígitos',
+            'direccion.required' => 'Debes escribir la dirección del proveedor',
+            'telefono.required' => 'Debes escribir el teléfono del proveedor',
+        ]);
+        return DB::transaction(function() use ($request){
+            $obj = Proveedor::withTrashed()->find($request->id);
+            if(empty($obj)){
+                $obj = new Proveedor();
+            }
+            $obj->fill($request->all());
+            $obj->save();
+    
+            return response()->json($obj);
+        });
     }
 
     public function edit($id)
@@ -98,5 +114,14 @@ class ProveedorController extends Controller
         }
         $obj->restore();
         return response()->json();
+    }
+
+    public function buscar($search){
+        $search           = str_replace(' ', '', urldecode($search));;
+
+        $objeto     = Proveedor::where('ruc','like','%'.$search.'%')->orwhereRaw("REPLACE(descripcion,' ', '') ilike ?",["%".$search."%"]);
+
+        $datos["search"]  = $objeto->take(10)->get();
+        return $datos;
     }
 }

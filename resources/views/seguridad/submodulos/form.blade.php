@@ -17,7 +17,7 @@
 
 					<div class="form-group form-row">
 
-						<div class="col-sm-6">
+						<div class="col-md-6">
 							<label for="{{$prefix}}_idmodulo" class="col-form-label">Módulo</label>
 
 							<div class="select2-{{$prefix}}_idmodulo">
@@ -30,36 +30,34 @@
 							</div>
 						</div>
 
-						<div class="col-sm-6">
+						<div class="col-md-6">
 							<label for="{{$prefix}}_descripcion" class="col-form-label">Submódulo</label>
 							<input class="form-control form-control-sm" type="text" placeholder="Submódulo" id="{{$prefix}}_descripcion" name="descripcion">
 						</div>
 
-						<div class="col-sm-6">
+						<div class="col-md-6">
 							<label for="{{$prefix}}_abreviatura" class="col-form-label">Abreviatura</label>
 							<input class="form-control form-control-sm" type="text" placeholder="Abreviatura" id="{{$prefix}}_abreviatura" name="abreviatura">
 						</div>
 
-						<div class="col-sm-6">
+						<div class="col-md-6">
 							<label for="{{$prefix}}_url" class="col-form-label">URL</label>
 							<input class="form-control form-control-sm" type="text" placeholder="URL" id="{{$prefix}}_url" name="url">
 						</div>
 
-						<div class="col-sm-6">
+						<div class="col-md-6">
 							<label for="{{$prefix}}_icono" class="col-form-label">Ícono</label>
 							<input class="form-control form-control-sm" type="text" placeholder="Ícono" id="{{$prefix}}_icono" name="icono">
 						</div>
 
-						<div class="col-sm-6">
+						<div class="col-md-6">
 							<label for="{{$prefix}}_orden" class="col-form-label">Orden</label>
 							<input class="form-control form-control-sm" type="text" placeholder="Orden" id="{{$prefix}}_orden" name="orden">
 						</div>
 
-						<div class="col-md-12 d-flex">
-							<label for="{{$prefix}}_funcion">Funciones</label><br>
-
+						<div class="col-md-12 d-flex mt-2">
 							<div class="select2-{{$prefix}}_idfuncion" style="width: 85%;">
-								<select name="idfuncion" id="{{$prefix}}_idfuncion" class="form-control form-control-sm  select2">
+								<select name="idfuncion" id="{{$prefix}}_idfuncion" class="form-control select2">
 									<option label="Selecciona la Función"></option>
 									@foreach($funciones as $funcion)
 									<option value="{{$funcion->id}}">{{$funcion->descripcion}}</option>

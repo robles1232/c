@@ -26,8 +26,8 @@
 						<thead>
 							<tr>
 								<th width="05%">#</th>
-								<th width="45%">Unidad</th>
-								<th width="45%">Desagregado</th>
+								<th width="45%">Unidad de Medida</th>
+								<th width="45%">Abreviatura</th>
 								<th width="05%">Estado</th>
 							</tr>
 						</thead>

@@ -1,4 +1,4 @@
-let msj_modulo_ = "Módulo Unidades de Medida"
+let msj_modulo = "Unidades de Medida"
 $(document).ready(function() {
     load_datatable()
 })
@@ -13,8 +13,16 @@ const load_datatable = () => {
                 searchable: false,
                 className: "text-center"
             },
-            {data: 'unidad'},
-            {data: 'desagregado'},
+            {
+                data: 'descripcion',
+                orderable: true,
+                searchable: true,
+            },
+            {
+                data: 'abreviatura',
+                orderable: true,
+                searchable: true,
+            },
             {
                 data: 'activo',
                 orderable: false,
