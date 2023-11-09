@@ -109,6 +109,18 @@ class PermissionSeeder extends Seeder
             'edit-mesas',
             'store-mesas',
             'destroy-mesas',
+
+            'index-recetas',
+            'create-recetas',
+            'edit-recetas',
+            'store-recetas',
+            'destroy-recetas',
+
+            'index-menus',
+            'create-menus',
+            'edit-menus',
+            'store-menus',
+            'destroy-menus',
         ];
         
 

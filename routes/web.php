@@ -17,6 +17,8 @@ use App\Http\Controllers\almacen\ProveedorController;
 use App\Http\Controllers\almacen\ProductosController;
 use App\Http\Controllers\almacen\ComprasController;
 
+use App\Http\Controllers\local\MesasController;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -80,4 +82,8 @@ Route::group(['middleware' => ['auth']], function(){
     /** ------------- ALMACEN-COMPRAS */
     Route::resource('compras', ComprasController::class)->only('index', 'create', 'store', 'edit', 'destroy');
     Route::get('compras/grilla/', [ComprasController::class, 'grilla'])->name('compras.grilla');
+
+    /**---------------LOCAL - MESAS */
+    Route::resource('mesas', MesasController::class)->only('index', 'create', 'store', 'edit', 'destroy');
+    Route::get('mesas/grilla/', [MesasController::class, 'grilla'])->name('mesas.grilla');
 });
