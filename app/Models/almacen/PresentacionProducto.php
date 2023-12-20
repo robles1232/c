@@ -6,19 +6,25 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
-class Marca extends Model
+class PresentacionProducto extends Model
 {
     use SoftDeletes;
 
-    protected $table        = "marcas";
+    protected $table        = "presentacion_productos";
     protected $primaryKey   = "id";
 
     protected $fillable = [
+        'idunidad_medida',
         'descripcion',
+        'cantidad',
         'deleted_at'
     ];
 
     public function getTableName(){
         return $this->table;
+    }
+
+    public function unidad_medida(){
+        return $this->belongsTo(UnidadMedida::class, 'idunidad_medida');
     }
 }

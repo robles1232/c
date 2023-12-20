@@ -10,14 +10,16 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Validation\Rule;
 
 use App\Models\seguridad\Funcion;
-use App\Models\local\Mesa;
+use App\Models\local\Carta;
+use App\Models\local\CartaSeccion;
+use App\Models\local\CartaSeccionDetalle;
 
-class RecetasController extends Controller
+class CartaController extends Controller
 {
     protected $modulo = "Local";
-    protected $submodulo = "Recetas";
+    protected $submodulo = "Cartas";
     protected $dir_modulo = "local";
-    protected $dir_submodulo = "recetas";
+    protected $dir_submodulo = "cartas";
     protected $path_controller = null;
 
     protected $model = null;
@@ -30,7 +32,7 @@ class RecetasController extends Controller
         }
 
         $this->path_controller = $this->dir_modulo."_".$this->dir_submodulo;
-        $this->model = new Mesa();
+        $this->model = new Carta();
         $this->table =  $this->model->getTableName();
     }
 
@@ -45,9 +47,8 @@ class RecetasController extends Controller
         $data["data"]           = [];
 
         if($id != null){
-            $data["data"]      = Mesa::find($id);
+            $data["data"]      = Carta::with('secciones.seccion')->with('secciones.carta_seccion_detalle.plato')->with('secciones.carta_seccion_detalle.producto')->find($id);
         }
-
         return $data;
     }
 
@@ -58,18 +59,20 @@ class RecetasController extends Controller
 
     public function grilla()
     {
-        $objeto = Mesa::withTrashed()->get();
+        $objeto = Carta::withTrashed()->get();
         return DataTables::of($objeto)
             ->addIndexColumn()
             ->addColumn("estado", function ($objeto) {
-                if($objeto->estado == 2)
-                    return "Ocupado";
-                return "Libre";
+                $estado = "Inactivo";
+                if($objeto->estado == 2){
+                    $estado = "Carta Actual";
+                }
+                return $estado;
             })
             ->addColumn("activo", function ($objeto) {
                 return (is_null($objeto->deleted_at)) ? '<span class="dot-label bg-success" title="Activo">Activo</span>' : '<span class="dot-label bg-danger" title="Inactivo">Eliminado</span>';
             })
-            ->rawColumns(["activo", "estado"])
+            ->rawColumns(["estado", "activo"])
             ->make(true);
     }
 
@@ -82,23 +85,63 @@ class RecetasController extends Controller
     {
         $this->validate($request, [
             'descripcion' => ['required', Rule::unique("{$this->driver_current}.{$this->model->getTableName()}", "descripcion")->ignore($request->id, "id")],
-            'cantidad' => 'required|integer',
+            'estado' => 'required',
         ], [
-            'descripcion.required' => 'Debes escribir el nombre de la Mesa',
-            'descripcion.unique' => 'Esta mesa ya está registrada',
-            'cantidad.required' => 'Debes escribir la cantidad de sitios',
-            'cantidad.integer' => 'La cantidad de sitios debe ser un número',
+            'descripcion.required' => 'Debes escribir el nombre de la Carta',
+            'descripcion.unique' => 'Esta carta ya está registrada',
+            'estado.required' => 'Debes seleccionar el estado de la carta'
         ]);
 
         return DB::transaction(function() use ($request){
-            $obj = Mesa::withTrashed()->find($request->id);
+            if(empty($request->secciones_carta)){
+                throw ValidationException::withMessages(["secciones_carta" => "Debes enviar las secciones de la carta"]);
+            }
+            if($request->estado == 2){
+                DB::table('cartas')->update(["estado" => 1]);
+            }
+
+            $obj = Carta::withTrashed()->find($request->id);
             if(empty($obj)){
-                $obj = new Mesa();
+                $obj = new Carta();
             }
 
             $obj->fill($request->all());
             $obj->save();
+
+            foreach ($request->secciones_carta as $key => $value) {
+                if($key == 0)
+                    CartaSeccion::where('idcarta', $obj->id)->delete();
+
+                $obj2 = CartaSeccion::withTrashed()->find($value["id"]);
+                if(empty($obj2)){
+                    $obj2 = new CartaSeccion();
+                }
     
+                $obj2->idcarta = $obj->id;
+                $obj2->idseccion = $value["idseccion_carta"];
+                $obj2->deleted_at = null;
+                $obj2->save();
+                foreach ($value["plato_producto"] as $key2 => $value2) {
+                    if($key2 == 0)
+                        CartaSeccionDetalle::where('idcarta_seccion', $obj2->id)->delete();
+
+                    $obj3 = CartaSeccionDetalle::withTrashed()->find($value2["id"]);
+
+                    if(empty($obj3)){
+                        $obj3 = new CartaSeccionDetalle();
+                    }
+                    $obj3->idcarta_seccion = $obj2->id;
+                    $obj3->tipo = $value2["tipo"];
+                    if($value2["tipo"] == 1){
+                        $obj3->idplato = $value2["idplato_producto"];
+                    }else{
+                        $obj3->idproducto = $value2["idplato_producto"];
+                    }
+                    $obj3->deleted_at = null;
+                    $obj3->save();
+                }
+            }
+            
             return response()->json($obj);
         });
     }
@@ -110,7 +153,7 @@ class RecetasController extends Controller
 
     public function destroy(Request $request)
     {   
-        $obj = Mesa::withTrashed()->find($request->id);
+        $obj = Carta::withTrashed()->find($request->id);
 
         if ($request->accion == "eliminar") {
             $obj->delete();

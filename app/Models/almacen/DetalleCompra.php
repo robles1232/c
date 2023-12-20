@@ -18,6 +18,8 @@ class DetalleCompra extends Model
         'idproducto',
         'cantidad',
         'precio_unit',
+        'tipo_presentacion', // 1 == UNITARIO || 2 == OTRAS PRESENTACIONES
+        'idpresentacion_producto',
         'deleted_at'
     ];
 
@@ -31,5 +33,9 @@ class DetalleCompra extends Model
 
     public function compra(){
         return $this->belongsTo(Compra::class, 'idcompra');
+    }
+
+    public function presentacion_producto(){
+        return $this->hasMany(PresentacionProducto::class, 'idpresentacion_producto');
     }
 }

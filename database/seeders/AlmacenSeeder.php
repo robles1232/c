@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\almacen\Categoria;
 use App\Models\almacen\Marca;
+use App\Models\almacen\PresentacionProducto;
 use Illuminate\Database\Seeder;
 use App\Models\almacen\UnidadMedida;
 use App\Models\almacen\Proveedor;
@@ -43,14 +43,23 @@ class AlmacenSeeder extends Seeder
         $obj->descripcion = "Mililitro";
         $obj->abreviatura = "ml";
         $obj->save();
-
-        //------------------MARCAS
-        $obj = new Marca();
-        $obj->descripcion = "Inka Kola";
+        //------------------ Presentaciones
+        $obj = new PresentacionProducto();
+        $obj->idunidad_medida = 2;
+        $obj->descripcion = "Saco 25kg";
+        $obj->cantidad = 25;
         $obj->save();
 
-        $obj = new Marca();
-        $obj->descripcion = "Pilsen";
+        $obj = new PresentacionProducto();
+        $obj->idunidad_medida = 2;
+        $obj->descripcion = "Saco 50kg";
+        $obj->cantidad = 50;
+        $obj->save();
+
+        $obj = new PresentacionProducto();
+        $obj->idunidad_medida = 1;
+        $obj->descripcion = "Caja 12ud";
+        $obj->cantidad = 12;
         $obj->save();
 
         //------------------TIPO DE PRODUCTOS
@@ -58,19 +67,13 @@ class AlmacenSeeder extends Seeder
         $obj->descripcion = "Bebida";
         $obj->save();
 
-        $obj = new Categoria();
-        $obj->idtipo_producto = 1;
-        $obj->descripcion = "Gaseosa";
-        $obj->save();
-
-        $obj = new Categoria();
-        $obj->idtipo_producto = 1;
-        $obj->descripcion = "Cerveza";
+        $obj = new TiposProducto();
+        $obj->descripcion = "Ingredientes";
         $obj->save();
 
         //-----------------PROVEEDORES
         $obj = new Proveedor();
-        $obj->descripcion = "Distribuidora Manquías";
+        $obj->descripcion = "Distribuidora Isaias";
         $obj->ruc = "2099988772";
         $obj->direccion = "Jr. Sauce #111";
         $obj->telefono = "999888777";
@@ -83,13 +86,11 @@ class AlmacenSeeder extends Seeder
         $obj->venta_directa = 2;
         $obj->precio_venta = "3.00";
         $obj->por_defecto = true;
-        $obj->stock = 99999999;
+        $obj->stock = 999;
         $obj->save();
 
         $obj = new Producto();
         $obj->idtipo_producto = 1;
-        $obj->idcategoria = 1;
-        $obj->idmarca = 1;
         $obj->idunidad_medida = 1;
         $obj->descripcion = "Inka kola 250ml";
         $obj->venta_directa = 2;
@@ -98,8 +99,6 @@ class AlmacenSeeder extends Seeder
 
         $obj = new Producto();
         $obj->idtipo_producto = 1;
-        $obj->idcategoria = 1;
-        $obj->idmarca = 1;
         $obj->idunidad_medida = 1;
         $obj->descripcion = "Inka kola 1L";
         $obj->venta_directa = 2;
@@ -108,12 +107,17 @@ class AlmacenSeeder extends Seeder
 
         $obj = new Producto();
         $obj->idtipo_producto = 1;
-        $obj->idcategoria = 2;
-        $obj->idmarca = 2;
         $obj->idunidad_medida = 1;
         $obj->descripcion = "Pilsen callao 250";
         $obj->venta_directa = 2;
         $obj->precio_venta = "7.00";
+        $obj->save();
+
+        $obj = new Producto();
+        $obj->idtipo_producto = 2;
+        $obj->idunidad_medida = 2;
+        $obj->descripcion = "Cocona";
+        $obj->venta_directa = 1;
         $obj->save();
     }
 }

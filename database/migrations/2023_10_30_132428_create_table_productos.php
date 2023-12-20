@@ -19,16 +19,13 @@ class CreateTableProductos extends Migration
             $table->unsignedBigInteger('idtipo_producto')->nullable();
             $table->foreign('idtipo_producto')->references('id')->on('tipos_producto');
 
-            $table->unsignedBigInteger('idcategoria')->nullable();
-            $table->foreign('idcategoria')->references('id')->on('categorias');
-
             $table->unsignedBigInteger('idmarca')->nullable();
             $table->foreign('idmarca')->references('id')->on('marcas');
 
             $table->unsignedBigInteger('idunidad_medida');
             $table->foreign('idunidad_medida')->references('id')->on('unidades_medida');
             $table->string('descripcion');
-            $table->double('stock', 8, 2)->default(0);
+            $table->decimal('stock', 8, 2)->default(0);
             $table->decimal('precio_venta', 8, 2)->default(0);
             $table->unsignedBigInteger('venta_directa')->default(1);
             $table->boolean('por_defecto')->default(false);

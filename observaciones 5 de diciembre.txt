@@ -1,0 +1,16 @@
+1 saco equivale
+papa pelada x 25 kg -> 1 und
+descontar los gramos a los kg ingresados
+
+tipos de comida (broster, hamburguesa y bebidas) -> secciones de carta
+
+/*sugerencia*/ tabla maestra (clientes y proveedores en una misma tabla)
+
+relacionar la marca con el tipo de presentacion de producto en productos
+
+/*/considerar igv(18%) y descuentos
+
+extensión de pedidos en mesa para agregar pedidos
+
+preguntar si la cuenta será por separado o junta
+(pedidos por cada persona)

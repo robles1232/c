@@ -1,5 +1,6 @@
 var array_productos = []
 var array_productos_eliminados = []
+var sub_total_productos = 0.00;
 var total = 0.00;
 
 $("#form-"+_dir_submodulo_almacen_compras).on('focus', '.is_invalid', function(e){
@@ -13,7 +14,52 @@ $("#form-"+_dir_submodulo_almacen_compras).on('click', '.select2-is_invalid', fu
     toastr.remove();
     toastr.error($(this).data('invalid'), msj_modulo)
 })
+/** ----------------- IGV ---------------------*/
+$("#"+_prefix_almacen_compras+"_igv").change(function(e){
+    calcular_total();
+})
+/** ----------------- IGV ---------------------*/
 
+/** -----------------DESCUENTO------------------ */
+if(data_form.hay_descuento == 2){
+    $("#"+_prefix_almacen_compras+"_hay_descuento").val(2)
+    $("#"+_prefix_almacen_compras+"_descuento").attr("disabled", false)
+}
+
+if(data_form.hay_descuento == 1){
+    $("#"+_prefix_almacen_compras+"_hay_descuento").val(1)
+    $("#"+_prefix_almacen_compras+"_descuento").attr("disabled", true)
+}
+
+$("#"+_prefix_almacen_compras+"_hay_descuento").change(function(e){
+    if($(this).val() == 1){
+        $("#"+_prefix_almacen_compras+"_descuento").val(0)
+        $("#"+_prefix_almacen_compras+"_descuento").attr("disabled", true)
+    }
+
+    if($(this).val() == 2){
+        $("#"+_prefix_almacen_compras+"_descuento").attr("disabled", false)
+    }
+    calcular_total()
+});
+
+/**----------------------- PRESENTACIONES--------------------*/
+$("#"+_prefix_almacen_compras+"_tipo_presentacion").change(function(e){
+    if($(this).val() == 1){
+        $("#"+_prefix_almacen_compras+"_idpresentacion_producto").val(0).trigger("change")
+        $("#"+_prefix_almacen_compras+"_idpresentacion_producto").attr("disabled", true)
+    }
+
+    if($(this).val() == 2){
+        $("#"+_prefix_almacen_compras+"_idpresentacion_producto").attr("disabled", false)
+    }
+});
+/**----------------------- PRESENTACIONES--------------------*/
+
+$("#"+_prefix_almacen_compras+"_descuento").change(function(e){
+    calcular_total()
+})
+/*-----------------DESCUENTO--------------------------*/
 if ($("#autocomplete-proveedor").length) {
     new Autocomplete("#autocomplete-proveedor", {
         search: input => {
@@ -89,14 +135,32 @@ if ($("#autocomplete-producto").length) {
             evento.preventDefault()
             $("#"+_prefix_almacen_compras+"_idproducto").val(result.id)
             $("#"+_prefix_almacen_compras+"_descripcion_producto").val(result.descripcion)
+            $("#"+_prefix_almacen_compras+"_producto_um").val(result.idunidad_medida)
         }
     })
 }
 
+function calcular_total(){
+    total = sub_total_productos;
+    if($("#"+_prefix_almacen_compras+"_igv").val() == 2){
+        total = (parseFloat(total) + parseFloat((total*18)/100) ).toFixed(2)
+    }
+
+    if($("#"+_prefix_almacen_compras+"_hay_descuento").val() == 2){
+        total = (parseFloat(total) - parseFloat($("#"+_prefix_almacen_compras+"_descuento").val()) ).toFixed(2)
+    }
+    cambiar_total();
+}
+
 function cambiar_total(){
     $(".article_total").html("<b><h5>Total: "+total+"</h5></b>")
+
+}
+function cambiar_sub_total_productos(){
+    $(".article_sub_total_productos").html("<b><h5>Sub. Total: "+sub_total_productos+"</h5></b>")
 }
 // ---------------------------- TABLA PRODUCTO 
+
 function agregar_producto(e) {
     e.preventDefault();
     var data = []
@@ -104,14 +168,37 @@ function agregar_producto(e) {
     const producto_edit = $("#"+_prefix_almacen_compras+"_idproducto_edit").val()
     const idproducto = $("#"+_prefix_almacen_compras+"_idproducto").val()
     const descripcion_producto = $("#"+_prefix_almacen_compras+"_descripcion_producto").val()
+    const producto_um = $("#"+_prefix_almacen_compras+"_producto_um").val()
+    const tipo_presentacion = $("#"+_prefix_almacen_compras+"_tipo_presentacion").val()
+    const idpresentacion_producto = $("#"+_prefix_almacen_compras+"_idpresentacion_producto").val()
+    const presentacion_unidad_medida = $("#"+_prefix_almacen_compras+"_idpresentacion_producto").find(":selected").data('unidad_medida')
     const cantidad = $("#"+_prefix_almacen_compras+"_cantidad").val()
     const precio_unit = $("#"+_prefix_almacen_compras+"_precio_unit").val()
     const sub_total = parseFloat(cantidad*precio_unit).toFixed(2)
     
+
     if (idproducto.length == 0) {
         $("#form-" + _dir_submodulo_almacen_compras + " #"+_prefix_almacen_compras+ "_buscar_producto").focus();
         toastr.warning("Debes seleccionar el producto", msj_modulo)
         return false
+    }
+
+    if(tipo_presentacion.length == 0){
+        $("#form-" + _dir_submodulo_almacen_compras + " #"+_prefix_almacen_compras+ "_tipo_presentacion").focus();
+        toastr.warning("Debes seleccionar el tipo de presentación", msj_modulo)
+        return false
+    }else if(tipo_presentacion == 2){
+        if(idpresentacion_producto.length == 0){
+            $("#form-" + _dir_submodulo_almacen_compras + " #"+_prefix_almacen_compras+ "_idpresentacion").focus();
+            toastr.warning("Debes seleccionar la presentación", msj_modulo)
+            return false
+        }
+
+        if(producto_um != presentacion_unidad_medida){
+            $("#form-" + _dir_submodulo_almacen_compras + " #"+_prefix_almacen_compras+ "_idpresentacion").focus();
+            toastr.warning("La unidad de medida del producto no puede ser diferente a la presentación", msj_modulo)
+            return false
+        }
     }
 
     if (cantidad.length == 0) {
@@ -126,12 +213,13 @@ function agregar_producto(e) {
         return false
     }
 
+
     array_productos.forEach((element, index) => {
         if ((element.idproducto == idproducto) && (producto_edit != index)) {
-            if (index_repetido.length == 0) {
+            if (producto_edit.length == 0) {
                 index_repetido = index
             } else {
-                if (index != index_repetido)
+                if (index != producto_edit)
                     index_repetido = index
             }
         }
@@ -145,12 +233,14 @@ function agregar_producto(e) {
     }
 
     if (producto_edit.length == 0) {
-        data = { id: "", idproducto: idproducto, descripcion_producto: descripcion_producto, cantidad: cantidad, precio_unit: precio_unit, sub_total: sub_total, editar: 1}
+        data = { id: "", idproducto: idproducto, descripcion_producto: descripcion_producto, producto_um: producto_um, tipo_presentacion: tipo_presentacion, idpresentacion_producto: idpresentacion_producto, cantidad: cantidad, precio_unit: precio_unit, sub_total: sub_total, editar: 1}
         array_productos.push(data)
     } else {
         array_productos[producto_edit].editar = 1
         array_productos[producto_edit].idproducto = idproducto
         array_productos[producto_edit].descripcion_producto = descripcion_producto
+        array_productos[producto_edit].tipo_presentacion = tipo_presentacion
+        array_productos[producto_edit].idpresentacion_producto = idpresentacion_producto
         array_productos[producto_edit].cantidad = cantidad
         array_productos[producto_edit].precio_unit = precio_unit
         array_productos[producto_edit].sub_total = sub_total
@@ -158,15 +248,19 @@ function agregar_producto(e) {
     $("#"+_prefix_almacen_compras+"_idproducto_edit").val("")
     $("#"+_prefix_almacen_compras+"_idproducto").val("")
     $("#"+_prefix_almacen_compras+"_descripcion_producto").val("")
+    $("#"+_prefix_almacen_compras+"_producto_um").val("")
     $("#"+_prefix_almacen_compras+"_buscar_producto").val("")
     $("#"+_prefix_almacen_compras+"_cantidad").val("")
     $("#"+_prefix_almacen_compras+"_precio_unit").val("")
+    $("#"+_prefix_almacen_compras+"_tipo_presentacion").val("").trigger("change")
+    $("#"+_prefix_almacen_compras+"_idpresentacion_producto").val("").trigger("change")
     
     $("#id_table_productos" + producto_edit).removeClass("selected")
     document.getElementById("table_productos").innerHTML = ""
     create_table_productos()
-    total = (parseFloat(total) + parseFloat(sub_total)).toFixed(2)
-    cambiar_total()
+    sub_total_productos = (parseFloat(sub_total_productos) + parseFloat(sub_total)).toFixed(2)
+    cambiar_sub_total_productos()
+    calcular_total()
 }
 
 function create_table_productos() {
@@ -228,7 +322,10 @@ function editar_producto(e, index) {
     array_productos[index].editar = 2
     $("#" + _prefix_almacen_compras+'_idproducto').val(array_productos[index].idproducto)
     $("#" + _prefix_almacen_compras+'_descripcion_producto').val(array_productos[index].descripcion_producto)
+    $("#" + _prefix_almacen_compras+'_producto_um').val(array_productos[index].producto_um)
     $("#" + _prefix_almacen_compras+'_buscar_producto').val(array_productos[index].descripcion_producto)
+    $("#" + _prefix_almacen_compras+'_tipo_presentacion').val(array_productos[index].tipo_presentacion).trigger("change")
+    $("#" + _prefix_almacen_compras+'_idpresentacion_producto').val(array_productos[index].idpresentacion_producto).trigger("change")
     $("#" + _prefix_almacen_compras+'_cantidad').val(array_productos[index].cantidad)
     $("#" + _prefix_almacen_compras+'_precio_unit').val(array_productos[index].precio_unit)
     $("#id_tr_producto" + index).addClass("selected")
@@ -245,12 +342,14 @@ function init(){
         llenar_proveedor(data_form.idproveedor, data_form.proveedor.ruc, data_form.proveedor.descripcion)
         data_form.detalle_compra.forEach((data, index) => {
             var datos = []
-            datos = { id: data.id, idproducto: data.idproducto, descripcion_producto: data.producto.descripcion, cantidad: data.cantidad, precio_unit: data.precio_unit, sub_total: (parseFloat(data.cantidad)*parseFloat(data.precio_unit)).toFixed(2), editar: 1 }
+            datos = { id: data.id, idproducto: data.idproducto, descripcion_producto: data.producto.descripcion, tipo_presentacion: data.tipo_presentacion, idpresentacion_producto: data.idpresentacion_producto, cantidad: data.cantidad, precio_unit: data.precio_unit, sub_total: (parseFloat(data.cantidad)*parseFloat(data.precio_unit)).toFixed(2), editar: 1 }
             array_productos.push(datos)
-            total = (parseFloat(total) + parseFloat(datos.sub_total)).toFixed(2)
+            sub_total_productos = (parseFloat(sub_total_productos) + parseFloat(datos.sub_total)).toFixed(2)
         })
-        cambiar_total()
+        cambiar_sub_total_productos()
         document.getElementById("table_productos").innerHTML = ""
         create_table_productos()
     }
+
+    calcular_total()
 }

@@ -372,24 +372,6 @@ const md_guardar = (e, obj) => {
     }
 }
 
-const md_aprobar = (e, obj) => {
-    e.preventDefault()
-    let accion = ($("#" + obj).attr('data-acciones'))
-    switch (obj) {
-        case "aprobar":
-            form.get(accion).enviar_aprobar()
-            break
-
-        case "denegar":
-            form.get(accion).enviar_denegar()
-            break
-
-        default:
-            form.get(accion).guardar()
-            break
-    }
-}
-
 const md_reporte = (e, obj) => {
     e.preventDefault()
     let accion = ($("#" + obj).attr('data-acciones'))

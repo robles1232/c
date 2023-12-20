@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\almacen;
 
 use App\Http\Controllers\Controller;
-use App\Models\almacen\Categoria;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
@@ -59,7 +58,7 @@ class TiposProductoController extends Controller
 
     public function grilla()
     {
-        $objeto = TiposProducto::withTrashed()->get();
+        $objeto = TiposProducto::withTrashed();
         return DataTables::of($objeto)
             ->addIndexColumn()
             ->addColumn("activo", function ($objeto) {
@@ -79,7 +78,7 @@ class TiposProductoController extends Controller
         $this->validate($request, [
             'descripcion' => ['required',  Rule::unique("{$this->driver_current}.{$this->model->getTableName()}", "descripcion")->ignore($request->id, "id")],
         ], [
-            'descripcion.required' => 'Debes escribir Tipo de Producto',
+            'descripcion.required' => 'Debes escribir el Tipo de Producto',
             'descripcion.unique' => 'Este Tipo de Producto ya está registrado',
         ]);
 
@@ -91,26 +90,7 @@ class TiposProductoController extends Controller
 
             $obj->fill($request->all());
             $obj->save();
-            
-            if(empty($request->categorias)){
-                throw ValidationException::withMessages(["categorias" => "Debes enviar mínimo una categoría"]);
-            }
 
-            foreach($request->categorias as $key => $value){
-                if($key == 0)
-                    Categoria::where('idtipo_producto', $obj->id)->delete();
-
-                $obj2 = Categoria::withTrashed()->find($value["id"]);
-                if(empty($obj2)){
-                    $obj2 = new Categoria();
-                }
-    
-                $obj2->fill($value);
-                $obj2->idtipo_producto = $obj->id;
-                $obj2->deleted_at = null;
-                $obj2->save();
-
-            }
             return response()->json($obj);
         });
     }
@@ -130,10 +110,5 @@ class TiposProductoController extends Controller
         }
         $obj->restore();
         return response()->json();
-    }
-
-    public function getCategoria($idtipo_producto){
-        $data = Categoria::where('idtipo_producto', $idtipo_producto)->get();
-        return response()->json($data);
     }
 }

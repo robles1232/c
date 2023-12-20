@@ -13,9 +13,7 @@ class Producto extends Model
     protected $primaryKey   = "id";
 
     protected $fillable = [
-        'idtipo_producto',
-        'idcategoria',
-        'idmarca',
+        'idtipo_producto', // 
         'idunidad_medida',
         'descripcion',
         'stock',
@@ -27,14 +25,6 @@ class Producto extends Model
 
     public function tipo_producto(){
         return $this->belongsTo(TiposProducto::class, 'idtipo_producto');
-    }
-
-    public function categoria(){
-        return $this->belongsTo(Categoria::class, 'idcategoria');
-    }
-
-    public function marca(){
-        return $this->belongsTo(Marca::class, 'idmarca');
     }
 
     public function unidad_medida(){

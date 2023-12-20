@@ -19,6 +19,9 @@ class Compra extends Model
         'serie_comprobante',
         'numero_comprobante',
         'fecha_compra',
+        'igv',
+        'hay_descuento',
+        'descuento',
         'deleted_at'
     ];
 

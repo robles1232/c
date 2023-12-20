@@ -21,51 +21,6 @@
 							<label for="{{$prefix}}_descripcion" class="col-form-label">Nombre</label>
 							<input class="form-control form-control-sm" type="text" placeholder="Nombre del Tipo de Producto" id="{{$prefix}}_descripcion" name="descripcion">
 						</div>
-
-						<div class="col-md-12 d-flex mt-3">
-							<div  style="width: 85%;">
-								<input class="form-control form-control-sm" type="text" placeholder="Categoría" id="{{$prefix}}_categoria" name="categoria">
-							</div>
-
-							<div style="width: 15%;" id="btn_add_categoria" class="btn_add">
-								<button class="btn btn-icon btn-outline-primary borderrad_left0 hover_primary" onclick="agregar_categoria(event)">
-									<i class="fe fe-plus-circle"></i>
-								</button>
-								<button class="btn btn-icon btn-outline-warning borderrad_left0 hover_primary d-none" onclick="agregar_categoria(event)">
-									<i class="fa fa-refresh"></i>
-								</button>
-							</div>
-						</div>
-
-						<div class="col-md-12">
-							<div class="mt-10px">
-								<div class="grid-margin">
-									<div class="">
-										<!-- Template actividades ---->
-										<template id="template_categorias">
-											<tr>
-												<td class="nro text-center"></td>
-												<td class="categoria text-center"></td>
-												<td class="btns text-center"></td>
-											</tr>
-										</template>
-										<div class="table-responsive">
-											<table class="table table_form card-table table-vcenter text-nowrap table-writhe align-items-center mb-0">
-												<thead class="bg-primary text-white">
-													<tr>
-														<th width="05%" class="text-center text-white">Nro</th>
-														<th width="80%" class="text-center text-white">Categorías</th>
-														<th width="15%" class="text-center text-white"></th>
-													</tr>
-												</thead>
-												<tbody id="table_categorias">
-												</tbody>
-											</table>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
 					</div>
 				</div>
 				<div class="modal-footer border-0">

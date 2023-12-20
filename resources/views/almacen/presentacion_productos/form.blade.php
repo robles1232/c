@@ -17,8 +17,26 @@
 
 					<div class="form-group form-row">
 						<div class="col-md-12">
-							<label for="{{$prefix}}_descripcion" class="col-form-label">Nombre</label>
-							<input class="form-control form-control-sm" type="text" placeholder="Nombre de la Marca" id="{{$prefix}}_descripcion" name="descripcion">
+							<label for="{{$prefix}}_descripcion" class="col-form-label">Presentación del Producto</label>
+							<input class="form-control form-control-sm" type="text" placeholder="Presentación del Producto" id="{{$prefix}}_descripcion" name="descripcion">
+						</div>
+
+						<div class="col-md-6">
+							<label for="{{$prefix}}_cantidad" class="col-form-label">Cantidad</label>
+							<input class="form-control form-control-sm" type="text" placeholder="Cantidad" id="{{$prefix}}_cantidad" name="cantidad">
+						</div>
+
+						<div class="col-md-6">
+							<label for="{{$prefix}}_idunidad_medida" class="col-form-label">Unidad de Medida</label>
+
+							<div class="select2-{{$prefix}}_idunidad_medida">
+								<select name="idunidad_medida" id="{{$prefix}}_idunidad_medida" class="form-control select2">
+									<option label="Seleccione la Unidad de Medida"></option>
+									@foreach($unidad_medida as $um)
+										<option value="{{$um->id}}">{{$um->descripcion}}</option>
+									@endforeach
+								</select>
+							</div>
 						</div>
 					</div>
 				</div>

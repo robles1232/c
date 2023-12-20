@@ -16,11 +16,14 @@ use App\Http\Controllers\almacen\MarcasController;
 use App\Http\Controllers\almacen\ProveedorController;
 use App\Http\Controllers\almacen\ProductosController;
 use App\Http\Controllers\almacen\ComprasController;
-
-use App\Http\Controllers\local\MesasController;
+use App\Http\Controllers\almacen\PresentacionProductosController;
+use App\Http\Controllers\local\MesaController;
+use App\Http\Controllers\local\PlatoController;
+use App\Http\Controllers\local\SeccionCartaController;
+use App\Http\Controllers\local\CartaController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('login');
 });
 
 Auth::routes();
@@ -63,11 +66,10 @@ Route::group(['middleware' => ['auth']], function(){
 
     Route::resource('tipos_producto', TiposProductoController::class)->only('index', 'create', 'store', 'edit', 'destroy');
     Route::get('tipos_producto/grilla/', [TiposProductoController::class, 'grilla'])->name('tipos_producto.grilla');
-    Route::get('tipos_producto/getCategoria/{idtipo_producto}', [TiposProductoController::class, 'getCategoria'])->name('tipos_producto.getCategoria');
 
     /** ------------- ALMACEN-MARCAS */
-    Route::resource('marcas', MarcasController::class)->only('index', 'create', 'store', 'edit', 'destroy');
-    Route::get('marcas/grilla/', [MarcasController::class, 'grilla'])->name('marcas.grilla');
+    Route::resource('presentacion_productos', PresentacionProductosController::class)->only('index', 'create', 'store', 'edit', 'destroy');
+    Route::get('presentacion_productos/grilla/', [PresentacionProductosController::class, 'grilla'])->name('presentacion_productos.grilla');
 
     /** ------------- ALMACEN-PROVEDORES */
     Route::resource('proveedores', ProveedorController::class)->only('index', 'create', 'store', 'edit', 'destroy');
@@ -78,12 +80,28 @@ Route::group(['middleware' => ['auth']], function(){
     Route::resource('productos', ProductosController::class)->only('index', 'create', 'store', 'edit', 'destroy');
     Route::get('productos/grilla/', [ProductosController::class, 'grilla'])->name('productos.grilla');
     Route::get('productos/buscar/{search}', [ProductosController::class, 'buscar'])->name('productos.buscar');
+    Route::get('productos/buscar_carta/{search}', [ProductosController::class, 'buscar_carta'])->name('productos.buscar_carta');
 
     /** ------------- ALMACEN-COMPRAS */
     Route::resource('compras', ComprasController::class)->only('index', 'create', 'store', 'edit', 'destroy');
     Route::get('compras/grilla/', [ComprasController::class, 'grilla'])->name('compras.grilla');
 
     /**---------------LOCAL - MESAS */
-    Route::resource('mesas', MesasController::class)->only('index', 'create', 'store', 'edit', 'destroy');
-    Route::get('mesas/grilla/', [MesasController::class, 'grilla'])->name('mesas.grilla');
+    Route::resource('mesas', MesaController::class)->only('index', 'create', 'store', 'edit', 'destroy');
+    Route::get('mesas/grilla/', [MesaController::class, 'grilla'])->name('mesas.grilla');
+
+    /**---------------LOCAL - PLATOS */
+    Route::resource('platos', PlatoController::class)->only('index', 'create', 'store', 'edit', 'destroy');
+    Route::get('platos/grilla/', [PlatoController::class, 'grilla'])->name('platos.grilla');
+    Route::get('platos/buscar_carta/{search}', [PlatoController::class, 'buscar_carta'])->name('platos.buscar_carta');
+
+
+    /**---------------LOCAL - SECCIÓN CARTA */
+    Route::resource('seccion_carta', SeccionCartaController::class)->only('index', 'create', 'store', 'edit', 'destroy');
+    Route::get('seccion_carta/grilla/', [SeccionCartaController::class, 'grilla'])->name('seccion_carta.grilla');
+    Route::get('seccion_carta/buscar/{search}', [SeccionCartaController::class, 'buscar'])->name('seccion_carta.buscar');
+
+    /**---------------LOCAL - CARTA */
+    Route::resource('cartas', CartaController::class)->only('index', 'create', 'store', 'edit', 'destroy');
+    Route::get('cartas/grilla/', [CartaController::class, 'grilla'])->name('cartas.grilla');
 });

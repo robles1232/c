@@ -28,7 +28,7 @@ class S2_AlmacenSeeder extends Seeder
         $modulo->save();
 
         //----------------- Submodulos
-        /**SUBMÓDULO */
+        /**UNIDADES DE MEDIDA */
         $submodulo = new Submodulo();
         $submodulo->idmodulo    = $modulo->id;
         $submodulo->descripcion = "Unidades de Medida";
@@ -62,12 +62,12 @@ class S2_AlmacenSeeder extends Seeder
         $funcion_submodulo->idfuncion   = 4;
         $funcion_submodulo->save();
         
-        /**SUBMÓDULO */
+        /**PRESENTACIÓNES */
         $submodulo = new Submodulo();
         $submodulo->idmodulo    = $modulo->id;
-        $submodulo->descripcion = "Tipos de Producto";
-        $submodulo->abreviatura = "TP.";
-        $submodulo->url         = "tipos_producto";
+        $submodulo->descripcion = "Presentaciones de Productos";
+        $submodulo->abreviatura = "pr_pd.";
+        $submodulo->url         = "presentacion_productos";
         $submodulo->orden       = 2;
         $submodulo->save();
 
@@ -96,12 +96,12 @@ class S2_AlmacenSeeder extends Seeder
         $funcion_submodulo->idfuncion   = 4;
         $funcion_submodulo->save();
 
-        /**SUBMÓDULO */
+        /**TIPOS DE PRODUCTO */
         $submodulo = new Submodulo();
         $submodulo->idmodulo    = $modulo->id;
-        $submodulo->descripcion = "Marcas";
-        $submodulo->abreviatura = "mr.";
-        $submodulo->url         = "marcas";
+        $submodulo->descripcion = "Tipos de Producto";
+        $submodulo->abreviatura = "TP.";
+        $submodulo->url         = "tipos_producto";
         $submodulo->orden       = 3;
         $submodulo->save();
 
@@ -130,7 +130,7 @@ class S2_AlmacenSeeder extends Seeder
         $funcion_submodulo->idfuncion   = 4;
         $funcion_submodulo->save();
 
-        /**SUBMÓDULO */
+        /**PROVEEDORES */
         $submodulo = new Submodulo();
         $submodulo->idmodulo    = $modulo->id;
         $submodulo->descripcion = "Proveedores";
@@ -165,7 +165,7 @@ class S2_AlmacenSeeder extends Seeder
         $funcion_submodulo->save();
 
 
-        /**SUBMÓDULO */
+        /**PRODUCTOS */
         $submodulo = new Submodulo();
         $submodulo->idmodulo    = $modulo->id;
         $submodulo->descripcion = "Productos";
@@ -199,7 +199,7 @@ class S2_AlmacenSeeder extends Seeder
         $funcion_submodulo->idfuncion   = 4;
         $funcion_submodulo->save();
 
-        /**SUBMÓDULO */
+        /**COMPRAS */
         $submodulo = new Submodulo();
         $submodulo->idmodulo    = $modulo->id;
         $submodulo->descripcion = "Compras";

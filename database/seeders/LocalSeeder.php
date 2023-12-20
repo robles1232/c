@@ -2,8 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\local\Mesa;
 use Illuminate\Database\Seeder;
+
+use App\Models\local\Mesa;
+use App\Models\local\SeccionCarta;
 
 class LocalSeeder extends Seeder
 {
@@ -33,6 +35,22 @@ class LocalSeeder extends Seeder
         $data = new Mesa();
         $data->descripcion = "Mesa 4";
         $data->sitios = "6";
+        $data->save();
+
+        //SECCIÓN DE CARTA
+        $data = new SeccionCarta();
+        $data->descripcion = "Hamburguesas";
+        $data->orden = 1;
+        $data->save();
+
+        $data = new SeccionCarta();
+        $data->descripcion = "Bebidas";
+        $data->orden = 2;
+        $data->save();
+
+        $data = new SeccionCarta();
+        $data->descripcion = "Refrescos";
+        $data->orden = 2;
         $data->save();
     }
 }

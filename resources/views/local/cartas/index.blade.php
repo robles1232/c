@@ -26,8 +26,9 @@
 						<thead>
 							<tr>
 								<th width="05%">#</th>
-								<th width="90%">Marca</th>
-								<th width="05%">Estado</th>
+								<th width="70%">Carta</th>
+								<th width="20%">Estado</th>
+								<th width="05%"></th>
 							</tr>
 						</thead>
 						<tbody>

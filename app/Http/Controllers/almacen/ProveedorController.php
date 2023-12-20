@@ -119,7 +119,7 @@ class ProveedorController extends Controller
     public function buscar($search){
         $search           = str_replace(' ', '', urldecode($search));;
 
-        $objeto     = Proveedor::where('ruc','like','%'.$search.'%')->orwhereRaw("REPLACE(descripcion,' ', '') ilike ?",["%".$search."%"]);
+        $objeto     = Proveedor::where('ruc','like','%'.$search.'%')->orWhereRaw("descripcion like (?)", ["%{$search}%"]);
 
         $datos["search"]  = $objeto->take(10)->get();
         return $datos;

@@ -13,15 +13,9 @@ use Spatie\Permission\Models\Permission;
 
 class PermissionSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     *
-     * @return void
-     */
-    public function run()
-    {   
 
-                
+    public function run()
+    {          
         //--------------ROLES
         $role = Role::findById(1);
 
@@ -73,11 +67,11 @@ class PermissionSeeder extends Seeder
             'store-unidades_medida',
             'destroy-unidades_medida',
 
-            'index-marcas',
-            'create-marcas',
-            'edit-marcas',
-            'store-marcas',
-            'destroy-marcas',
+            'index-presentacion_productos',
+            'create-presentacion_productos',
+            'edit-presentacion_productos',
+            'store-presentacion_productos',
+            'destroy-presentacion_productos',
 
             'index-tipos_producto',
             'create-tipos_producto',
@@ -110,17 +104,23 @@ class PermissionSeeder extends Seeder
             'store-mesas',
             'destroy-mesas',
 
-            'index-recetas',
-            'create-recetas',
-            'edit-recetas',
-            'store-recetas',
-            'destroy-recetas',
+            'index-platos',
+            'create-platos',
+            'edit-platos',
+            'store-platos',
+            'destroy-platos',
 
-            'index-menus',
-            'create-menus',
-            'edit-menus',
-            'store-menus',
-            'destroy-menus',
+            'index-seccion_carta',
+            'create-seccion_carta',
+            'edit-seccion_carta',
+            'store-seccion_carta',
+            'destroy-seccion_carta',
+
+            'index-cartas',
+            'create-cartas',
+            'edit-cartas',
+            'store-cartas',
+            'destroy-cartas',
         ];
         
 

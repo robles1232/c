@@ -45,6 +45,8 @@ form.register(_dir_submodulo_almacen_compras,{
             post_data.append("productos[" + index + "][index]", index)
             post_data.append("productos[" + index + "][id]", datos.id)
             post_data.append("productos[" + index + "][idproducto]", datos.idproducto)
+            post_data.append("productos[" + index + "][tipo_presentacion]", datos.tipo_presentacion)
+            post_data.append("productos[" + index + "][idpresentacion_producto]", datos.idpresentacion_producto)
             post_data.append("productos[" + index + "][cantidad]", datos.cantidad)
             post_data.append("productos[" + index + "][precio_unit]", datos.precio_unit)
         })

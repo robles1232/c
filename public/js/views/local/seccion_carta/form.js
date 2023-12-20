@@ -1,9 +1,9 @@
-form.register(_dir_submodulo_almacen_marcas,{
+form.register(_dir_submodulo_local_seccion_carta,{
     nuevo: function(){
-        get_modal(_dir_submodulo_almacen_marcas, _prefix_almacen_marcas)
+        get_modal(_dir_submodulo_local_seccion_carta, _prefix_local_seccion_carta)
     },
     editar: function(id){
-        get_modal(_dir_submodulo_almacen_marcas, _prefix_almacen_marcas, "edit", id)
+        get_modal(_dir_submodulo_local_seccion_carta, _prefix_local_seccion_carta, "edit", id)
     },
     eliminar_restaurar: function(id, obj){
         var $self = this
@@ -13,7 +13,7 @@ form.register(_dir_submodulo_almacen_marcas,{
         swal({ title: "Confirmar", text: "¿Desea " + accion__ + " el registro seleccionado?", type: "warning", showCancelButton: !0, confirmButtonText: "Confirmar", cancelButtonText: "Cancelar" }, function() {
 
             $.ajax({
-                url: route(_dir_submodulo_almacen_marcas + '.destroy', 'delete'),
+                url: route(_dir_submodulo_local_seccion_carta + '.destroy', 'delete'),
                 data: { id: id, accion: accion__ },
                 type: 'DELETE',
                 beforeSend: function() {},
@@ -38,11 +38,11 @@ form.register(_dir_submodulo_almacen_marcas,{
     },
     guardar: function() {
         var $self = this
-        let _form = "#form-" + _dir_submodulo_almacen_marcas
+        let _form = "#form-" + _dir_submodulo_local_seccion_carta
         let post_data = $(_form).serialize()
 
         $.ajax({
-            url: route(_dir_submodulo_almacen_marcas + '.store'),
+            url: route(_dir_submodulo_local_seccion_carta + '.store'),
             type: 'POST',
             data: post_data,
             cache: false,
@@ -51,19 +51,19 @@ form.register(_dir_submodulo_almacen_marcas,{
             success: function(response) {
                 toastr.success('Datos grabados correctamente', msj_modulo)
                 $self.callback(response)
-                close_modal(_dir_submodulo_almacen_marcas)
+                close_modal(_dir_submodulo_local_seccion_carta)
             },
             complete: function() {},
             error: function(e) {
                 if (e.status == 422) { //Errores de Validacion
                     toastr.remove();
-                    limpieza(_dir_submodulo_almacen_marcas)
+                    limpieza(_dir_submodulo_local_seccion_carta)
                     $.each(e.responseJSON.errors, function(i, item) {
-                        $('#'+ _prefix_almacen_marcas+ "_" + i ).addClass('is_invalid')
-                        $('#'+ _prefix_almacen_marcas+ "_" + i ).attr('data-invalid', item)
+                        $('#'+ _prefix_local_seccion_carta+ "_" + i ).addClass('is_invalid')
+                        $('#'+ _prefix_local_seccion_carta+ "_" + i ).attr('data-invalid', item)
 
-                        $('.select2-' + _prefix_almacen_marcas + "_" + i).addClass('select2-is_invalid');
-                        $('.select2-' + _prefix_almacen_marcas + "_" + i).attr('data-invalid', item);
+                        $('.select2-' + _prefix_local_seccion_carta + "_" + i).addClass('select2-is_invalid');
+                        $('.select2-' + _prefix_local_seccion_carta + "_" + i).attr('data-invalid', item);
 
                     })
                 } else {
@@ -73,6 +73,6 @@ form.register(_dir_submodulo_almacen_marcas,{
         })
     },
     callback: function(data) {
-        grilla.reload(_dir_submodulo_almacen_marcas)
+        grilla.reload(_dir_submodulo_local_seccion_carta)
     }
 })

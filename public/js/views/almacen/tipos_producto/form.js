@@ -41,13 +41,6 @@ form.register(_dir_submodulo_almacen_tipos_producto,{
         let _form = "#form-" + _dir_submodulo_almacen_tipos_producto
         let post_data = new FormData($(_form)[0])
 
-        array_categorias.forEach((datos, index) => {
-            post_data.append("categorias[" + index + "][index]", index)
-            post_data.append("categorias[" + index + "][id]", datos.id)
-            post_data.append("categorias[" + index + "][descripcion]", datos.descripcion)
-        })
-        
-
         $.ajax({
             url: route(_dir_submodulo_almacen_tipos_producto + '.store'),
             type: 'POST',

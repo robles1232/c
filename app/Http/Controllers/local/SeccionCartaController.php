@@ -10,14 +10,14 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Validation\Rule;
 
 use App\Models\seguridad\Funcion;
-use App\Models\local\Mesa;
+use App\Models\local\SeccionCarta;
 
-class MesasController extends Controller
+class SeccionCartaController extends Controller
 {
     protected $modulo = "Local";
-    protected $submodulo = "Mesas";
+    protected $submodulo = "Sección de Carta";
     protected $dir_modulo = "local";
-    protected $dir_submodulo = "mesas";
+    protected $dir_submodulo = "seccion_carta";
     protected $path_controller = null;
 
     protected $model = null;
@@ -30,7 +30,7 @@ class MesasController extends Controller
         }
 
         $this->path_controller = $this->dir_modulo."_".$this->dir_submodulo;
-        $this->model = new Mesa();
+        $this->model = new SeccionCarta();
         $this->table =  $this->model->getTableName();
     }
 
@@ -45,7 +45,7 @@ class MesasController extends Controller
         $data["data"]           = [];
 
         if($id != null){
-            $data["data"]      = Mesa::find($id);
+            $data["data"]      = SeccionCarta::find($id);
         }
 
         return $data;
@@ -58,18 +58,13 @@ class MesasController extends Controller
 
     public function grilla()
     {
-        $objeto = Mesa::withTrashed()->get();
+        $objeto = SeccionCarta::withTrashed();
         return DataTables::of($objeto)
             ->addIndexColumn()
-            ->addColumn("estado", function ($objeto) {
-                if($objeto->estado == 2)
-                    return "Ocupado";
-                return "Libre";
-            })
             ->addColumn("activo", function ($objeto) {
                 return (is_null($objeto->deleted_at)) ? '<span class="dot-label bg-success" title="Activo">Activo</span>' : '<span class="dot-label bg-danger" title="Inactivo">Eliminado</span>';
             })
-            ->rawColumns(["activo", "estado"])
+            ->rawColumns(["activo"])
             ->make(true);
     }
 
@@ -82,18 +77,18 @@ class MesasController extends Controller
     {
         $this->validate($request, [
             'descripcion' => ['required', Rule::unique("{$this->driver_current}.{$this->model->getTableName()}", "descripcion")->ignore($request->id, "id")],
-            'sitios' => 'required|integer',
+            'orden' => 'required|integer',
         ], [
-            'descripcion.required' => 'Debes escribir el nombre de la Mesa',
-            'descripcion.unique' => 'Esta mesa ya está registrada',
-            'sitios.required' => 'Debes escribir la cantidad de sitios',
-            'sitios.integer' => 'La cantidad de sitios debe ser un número',
+            'descripcion.required' => 'Debes escribir el nombre de la Sección de la Carta',
+            'descripcion.unique' => 'Esta sección ya se encuentra registrada',
+            'orden.required' => 'Debes escribir el orden de la sección',
+            'orden.integer' => 'El orden debe ser un número',
         ]);
 
         return DB::transaction(function() use ($request){
-            $obj = Mesa::withTrashed()->find($request->id);
+            $obj = SeccionCarta::withTrashed()->find($request->id);
             if(empty($obj)){
-                $obj = new Mesa();
+                $obj = new SeccionCarta();
             }
 
             $obj->fill($request->all());
@@ -110,7 +105,7 @@ class MesasController extends Controller
 
     public function destroy(Request $request)
     {   
-        $obj = Mesa::withTrashed()->find($request->id);
+        $obj = SeccionCarta::withTrashed()->find($request->id);
 
         if ($request->accion == "eliminar") {
             $obj->delete();
@@ -118,5 +113,14 @@ class MesasController extends Controller
         }
         $obj->restore();
         return response()->json();
+    }
+
+    public function buscar($search){
+        $search           = str_replace(' ', '', urldecode($search));;
+
+        $objeto     = SeccionCarta::whereRaw("REPLACE(descripcion,' ', '') ilike ?",["%".$search."%"]);
+
+        $datos["search"]  = $objeto->take(10)->get();
+        return $datos;
     }
 }

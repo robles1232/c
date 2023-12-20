@@ -1,12 +1,12 @@
-let msj_modulo = "Marcas"
+let msj_modulo = "Secciones de Carta"
 $(document).ready(function() {
     load_datatable()
 })
 
 //------------------------------------------------------------- Datatable
 const load_datatable = () => {
-    table = $('#dt-' + _dir_submodulo_almacen_marcas).DataTable({
-        ajax: route(_dir_submodulo_almacen_marcas + ".grilla"),
+    table = $('#dt-' + _dir_submodulo_local_seccion_carta).DataTable({
+        ajax: route(_dir_submodulo_local_seccion_carta + ".grilla"),
         columns: [{
                 data: 'DT_RowIndex',
                 orderable: false,
@@ -17,6 +17,12 @@ const load_datatable = () => {
                 data: 'descripcion',
                 orderable: true,
                 searchable: true,
+            },
+            {
+                data: 'orden',
+                orderable: true,
+                searchable: true,
+                className: "text-center"
             },
             {
                 data: 'activo',
@@ -35,15 +41,15 @@ const load_datatable = () => {
 
 $("#btn-create").on("click", function(e) {
     e.preventDefault();
-    form.get(_dir_submodulo_almacen_marcas).nuevo();
+    form.get(_dir_submodulo_local_seccion_carta).nuevo();
 });
 
 //------------------------------------------------------------- Editar
 $("#btn-edit").on("click", function(e) {
     e.preventDefault()
-    var id = grilla.get_id(_dir_submodulo_almacen_marcas)
+    var id = grilla.get_id(_dir_submodulo_local_seccion_carta)
     if (id != null) {
-        form.get(_dir_submodulo_almacen_marcas).editar(id)
+        form.get(_dir_submodulo_local_seccion_carta).editar(id)
     } else {
         alertas.warning("Ups..!")
     }
@@ -52,9 +58,9 @@ $("#btn-edit").on("click", function(e) {
 //------------------------------------------------------------- Eliminar
 $("#btn-destroy").on("click", function(e) {
     e.preventDefault()
-    var id = grilla.get_id(_dir_submodulo_almacen_marcas)
+    var id = grilla.get_id(_dir_submodulo_local_seccion_carta)
     if (id != null) {
-        form.get(_dir_submodulo_almacen_marcas).eliminar_restaurar(id, this)
+        form.get(_dir_submodulo_local_seccion_carta).eliminar_restaurar(id, this)
     } else {
         alertas.warning("Ups..!")
     }

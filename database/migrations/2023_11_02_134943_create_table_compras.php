@@ -22,6 +22,9 @@ class CreateTableCompras extends Migration
             $table->string('serie_comprobante', 4);
             $table->unsignedBigInteger('numero_comprobante');
             $table->date('fecha_compra');
+            $table->unsignedBigInteger('igv')->default(1);
+            $table->unsignedBigInteger('hay_descuento')->default(1);
+            $table->decimal('descuento', 8,2)->default(0);
             $table->timestamps();
             $table->softDeletes();
         });

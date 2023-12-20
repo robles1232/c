@@ -24,6 +24,11 @@ class CreateTableDetalleCompra extends Migration
             $table->double('cantidad', 8, 2);
             $table->float('precio_unit', 8, 2);
             
+            $table->unsignedBigInteger('tipo_presentacion')->comment('1 == unitario || 2 == otras presentaciones');
+            
+            $table->unsignedBigInteger('idpresentacion_producto')->nullable();
+            $table->foreign('idpresentacion_producto')->references('id')->on('presentacion_productos');
+
             $table->timestamps();
             $table->softDeletes();
         });

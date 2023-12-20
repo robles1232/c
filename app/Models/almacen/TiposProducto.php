@@ -17,10 +17,6 @@ class TiposProducto extends Model
         'deleted_at'
     ];
 
-    public function categorias(){
-        return $this->hasMany(Categoria::class, 'idtipo_producto');
-    }
-
     public function getTableName(){
         return $this->table;
     }

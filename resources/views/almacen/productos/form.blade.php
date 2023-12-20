@@ -17,7 +17,7 @@
 					<input type="hidden" name="id" id="{{$prefix}}_id">
 
 					<div class="form-group form-row">
-						<div class="col-md-4">
+						<div class="col-md-6">
 							<label for="{{$prefix}}_idtipo_producto" class="col-form-label">Tipo de Producto</label>
 
 							<div class="select2-{{$prefix}}_idtipo_producto">
@@ -29,28 +29,7 @@
 								</select>
 							</div>
 						</div>
-						<div class="col-md-4">
-							<label for="{{$prefix}}_idcategoria" class="col-form-label">Categoría</label>
-
-							<div class="select2-{{$prefix}}_idcategoria">
-								<select name="idcategoria" id="{{$prefix}}_idcategoria" class="form-control select2">
-									<option label="Seleccione la categoría"></option>
-								</select>
-							</div>
-						</div>
-						<div class="col-md-4">
-							<label for="{{$prefix}}_idmarca" class="col-form-label">Marcas</label>
-
-							<div class="select2-{{$prefix}}_idmarca">
-								<select name="idmarca" id="{{$prefix}}_idmarca" class="form-control select2">
-									<option label="Seleccione la marca"></option>
-									@foreach($marcas as $marca)
-									<option value="{{$marca->id}}">{{$marca->descripcion}}</option>
-									@endforeach
-								</select>
-							</div>
-						</div>
-						<div class="col-md-4">
+						<div class="col-md-6">
 							<label for="{{$prefix}}_idunidad_medida" class="col-form-label">Unidad de Medida</label>
 
 							<div class="select2-{{$prefix}}_idunidad_medida">
@@ -62,7 +41,7 @@
 								</select>
 							</div>
 						</div>
-						<div class="col-md-8">
+						<div class="col-md-12">
 							<label for="{{$prefix}}_descripcion" class="col-form-label">Producto</label>
 							<input class="form-control form-control-sm" type="text" placeholder="Nombre del Producto" id="{{$prefix}}_descripcion" name="descripcion">
 						</div>

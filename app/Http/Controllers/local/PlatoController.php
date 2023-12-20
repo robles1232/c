@@ -10,14 +10,15 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Validation\Rule;
 
 use App\Models\seguridad\Funcion;
-use App\Models\local\Mesa;
+use App\Models\local\Plato;
+use App\Models\local\PlatoDetalle;
 
-class MenuController extends Controller
+class PlatoController extends Controller
 {
     protected $modulo = "Local";
-    protected $submodulo = "Menu";
+    protected $submodulo = "Platos";
     protected $dir_modulo = "local";
-    protected $dir_submodulo = "Menu";
+    protected $dir_submodulo = "platos";
     protected $path_controller = null;
 
     protected $model = null;
@@ -30,7 +31,7 @@ class MenuController extends Controller
         }
 
         $this->path_controller = $this->dir_modulo."_".$this->dir_submodulo;
-        $this->model = new Mesa();
+        $this->model = new Plato();
         $this->table =  $this->model->getTableName();
     }
 
@@ -45,7 +46,7 @@ class MenuController extends Controller
         $data["data"]           = [];
 
         if($id != null){
-            $data["data"]      = Mesa::find($id);
+            $data["data"]      = Plato::with('detalle.producto')->find($id);
         }
 
         return $data;
@@ -58,18 +59,16 @@ class MenuController extends Controller
 
     public function grilla()
     {
-        $objeto = Mesa::withTrashed()->get();
+        $objeto = Plato::withTrashed()->get();
         return DataTables::of($objeto)
             ->addIndexColumn()
-            ->addColumn("estado", function ($objeto) {
-                if($objeto->estado == 2)
-                    return "Ocupado";
-                return "Libre";
+            ->addColumn("precio_venta", function ($objeto) {
+                return "S/.".$objeto->precio_venta;
             })
             ->addColumn("activo", function ($objeto) {
                 return (is_null($objeto->deleted_at)) ? '<span class="dot-label bg-success" title="Activo">Activo</span>' : '<span class="dot-label bg-danger" title="Inactivo">Eliminado</span>';
             })
-            ->rawColumns(["activo", "estado"])
+            ->rawColumns(["activo", "precio_venta"])
             ->make(true);
     }
 
@@ -81,24 +80,45 @@ class MenuController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'descripcion' => ['required', Rule::unique("{$this->driver_current}.{$this->model->getTableName()}", "descripcion")->ignore($request->id, "id")],
-            'cantidad' => 'required|integer',
+            'nombre' => ['required', Rule::unique("{$this->driver_current}.{$this->model->getTableName()}", "nombre")->ignore($request->id, "id")],
+            'descripcion' => 'required',
+            'precio_venta' => 'required|numeric',
         ], [
-            'descripcion.required' => 'Debes escribir el nombre de la Mesa',
-            'descripcion.unique' => 'Esta mesa ya está registrada',
-            'cantidad.required' => 'Debes escribir la cantidad de sitios',
-            'cantidad.integer' => 'La cantidad de sitios debe ser un número',
+            'nombre.required' => 'Debes escribir el nombre del Plato',
+            'nombre.unique' => 'Este Plato ya está registrado',
+            'descripcion.required' => 'Debes indicar la descripción del Plato',
+            'precio_venta.required' => 'Debes indicar el precio de venta',
+            'precio_venta.numeric' => 'El precio de venta debe ser un número',
         ]);
 
         return DB::transaction(function() use ($request){
-            $obj = Mesa::withTrashed()->find($request->id);
+            if(empty($request->productos)){
+                throw ValidationException::withMessages(["productos" => "Debes enviar los productos que se usan para preparar el plato"]);
+            }
+            
+            $obj = Plato::withTrashed()->find($request->id);
             if(empty($obj)){
-                $obj = new Mesa();
+                $obj = new Plato();
             }
 
             $obj->fill($request->all());
             $obj->save();
+
+            foreach ($request->productos as $key => $value) {
+                if($key == 0)
+                    PlatoDetalle::where('idplato', $obj->id)->delete();
+
+                $obj2 = PlatoDetalle::withTrashed()->find($value["id"]);
+                if(empty($obj2)){
+                    $obj2 = new PlatoDetalle();
+                }
     
+                $obj2->fill($value);
+                $obj2->idplato = $obj->id;
+                $obj2->deleted_at = null;
+                $obj2->save();
+            }
+            
             return response()->json($obj);
         });
     }
@@ -110,7 +130,7 @@ class MenuController extends Controller
 
     public function destroy(Request $request)
     {   
-        $obj = Mesa::withTrashed()->find($request->id);
+        $obj = Plato::withTrashed()->find($request->id);
 
         if ($request->accion == "eliminar") {
             $obj->delete();
@@ -118,5 +138,14 @@ class MenuController extends Controller
         }
         $obj->restore();
         return response()->json();
+    }
+
+    public function buscar_carta($search){
+        $search           = str_replace(' ', '', urldecode($search));;
+
+        $objeto     = Plato::whereRaw("nombre like (?)", ["%{$search}%"]);
+        $objeto->select("id", "nombre as descripcion", "precio_venta");
+        $datos["search"]  = $objeto->take(10)->get();
+        return $datos;
     }
 }

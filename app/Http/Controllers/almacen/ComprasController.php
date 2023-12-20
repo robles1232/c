@@ -13,6 +13,7 @@ use App\Models\seguridad\Funcion;
 use App\Models\almacen\Compra;
 use App\Models\almacen\DetalleCompra;
 use App\Models\almacen\Producto;
+use App\Models\almacen\PresentacionProducto;
 
 class ComprasController extends Controller
 {
@@ -44,6 +45,7 @@ class ComprasController extends Controller
         $data["dir_submodulo"]  = $this->dir_submodulo;
         $data["path_controller"]= $this->path_controller;
         $data["prefix"]         = "";
+        $data["presentaciones"] = PresentacionProducto::get();
         $data["data"]           = [];
 
         if($id != null){
@@ -72,6 +74,14 @@ class ComprasController extends Controller
                     $total = $total + $value->cantidad*$value->precio_unit;
                 }
 
+                if($objeto->igv == 2){
+                    $total = $total + (($total*18)/100);
+                }
+
+                if($objeto->hay_descuento == 2){
+                    $total = $total - $objeto->descuento;
+                }
+
                 return "S/. ".number_format($total, 2, '.', '');
             })
             ->addColumn("activo", function ($objeto) {
@@ -93,7 +103,10 @@ class ComprasController extends Controller
             'tipo_comprobante' => 'required',
             'serie_comprobante'  => 'required',
             'numero_comprobante' => 'required',
-            'fecha_compra' => 'required|date'
+            'fecha_compra' => 'required|date',
+            'igv' => 'required',
+            'hay_descuento' => 'required',
+            'descuento' => 'required_if:hay_descuento,=,2'
         ], [
             'descripcion_proveedor.required' => 'Debes seleccionar el proveedor',
             'tipo_comprobante.required'  => 'Debes seleccionar el tipo de comprobante',
@@ -101,6 +114,9 @@ class ComprasController extends Controller
             'numero_comprobante.required' => 'Debes escribir el número del comprobante',
             'fecha_compra.required' => 'Debes seleccionar la fecha de compra',
             'fecha_compra.date' => 'La fecha de compra debe tener el formato de fecha DD/MM/YYYY',
+            'igv.required' => 'Indica si se aplica el IGV',
+            'hay_descuento.required' => 'Indica si hay algún descuento',
+            'descuento.required_if' => 'Debes escribir el monto del descuento'
         ]);
 
         return DB::transaction(function() use ($request){
@@ -115,7 +131,7 @@ class ComprasController extends Controller
             if(empty($request->productos)){
                 throw ValidationException::withMessages(["productos" => "Debes envíar como mínimo un producto"]);
             }
-
+            //dd($request->all());
             foreach ($request->productos as $key => $value) {
                 if($key == 0){
                     $del = DetalleCompra::where('idcompra', $obj->id)->delete();
@@ -125,7 +141,13 @@ class ComprasController extends Controller
                     foreach ($rec as $key => $det_del) {
                         
                         $prod = Producto::where('id', $det_del->idproducto)->first();
-                        $prod->decrement('stock', $det_del->cantidad);
+                        if($det_del->tipo_presentacion == 1){
+                            $prod->decrement('stock', $det_del->cantidad);
+
+                        }else{
+                            $presentacion = PresentacionProducto::where('id', $det_del->idpresentacion_producto)->first();
+                            $prod->decrement('stock', $det_del->cantidad*$presentacion->cantidad);
+                        }
                         $prod->save();
                     }
                 }
@@ -134,14 +156,22 @@ class ComprasController extends Controller
                 if(empty($obj2)){
                     $obj2 = new DetalleCompra();
                 }
-    
+
                 $obj2->fill($value);
                 $obj2->idcompra = $obj->id;
                 $obj2->deleted_at = null;
+                if($value["tipo_presentacion"] == 1){
+                    $obj2->idpresentacion_producto = null;
+                }
                 $obj2->save();
 
                 $prod = Producto::where('id', $value["idproducto"])->first();
-                $prod->increment('stock', $value["cantidad"]);
+                if($value["tipo_presentacion"] == 1){
+                    $prod->increment('stock', $value["cantidad"]);
+                }else{
+                    $presentacion = PresentacionProducto::where('id', $value["idpresentacion_producto"])->first();
+                    $prod->increment('stock', $value["cantidad"]*$presentacion->cantidad);
+                }
                 $prod->save();
             }
             return response()->json($obj);

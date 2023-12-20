@@ -55,9 +55,12 @@
 
 						<div class="col-md-12 form-row mt-3 mb-3">
 							<input type="hidden" id="{{$prefix}}_idproducto">
+							<input type="hidden" id="{{$prefix}}_producto_um">
 							<input type="hidden" id="{{$prefix}}_descripcion_producto">
 							
-							<div class="col-md-6">
+							<div class="col-md-4">
+								<label for="{{$prefix}}_buscar_producto" class="col-form-label">Buscar Producto</label>
+
 								<div id="autocomplete-producto" class="autocomplete">
 									<input type="text" class="form-control form-control-sm" id="{{$prefix}}_buscar_producto" name="buscar_producto" placeholder="Buscar producto*">
 									<ul class="autocomplete-result-list"></ul>
@@ -65,20 +68,49 @@
 							</div>
 
 							<div class="col-md-2">
+								<label for="{{$prefix}}_tipo_presentacion" class="col-form-label">Tipo Presentación</label>
+
+								<div class="select2-{{$prefix}}_tipo_presentacion">
+									<select name="tipo_presentacion" id="{{$prefix}}_tipo_presentacion" class="form-control select2">
+										<option label=""></option>
+										<option value="1">Unitaria</option>
+										<option value="2">Otras Presentaciones</option>
+									</select>
+								</div>
+							</div>
+
+							<div class="col-md-2">
+								<label for="{{$prefix}}_idpresentacion_producto" class="col-form-label">Presentación</label>
+								
+								<div class="select2-{{$prefix}}_idpresentacion_producto">
+									<select name="idpresentacion_producto" id="{{$prefix}}_idpresentacion_producto" class="form-control select2" disabled>
+										<option label=""></option>
+										@foreach($presentaciones as $pr)
+											<option value="{{$pr->id}}" data-cantidad="{{$pr->cantidad}}"
+											data-unidad_medida="{{$pr->idunidad_medida}}"
+											">{{$pr->descripcion}}</option>
+										@endforeach
+									</select>
+								</div>
+							</div>
+
+							<div class="col-md-2">
+
+								<label for="{{$prefix}}_cantidad" class="col-form-label">Cantidad</label>
+
 								<input type="text" class="form-control form-control-sm" id="{{$prefix}}_cantidad" name="cantidad" placeholder="Cantidad">
 							</div>
 
-							<div class="col-md-4 d-flex">
-								<div style="width: 80%;">
-									<input type="text" class="form-control form-control-sm" id="{{$prefix}}_precio_unit" name="precio_unit" placeholder="Precio Unitario">
+							<div class="col-md-2 d-flex">
+								<div style="width: 65%;">
+									<label for="{{$prefix}}_precio_unit" class="col-form-label">Precio</label>
+
+									<input type="text" class="form-control form-control-sm" id="{{$prefix}}_precio_unit" name="precio_unit" placeholder="Precio">
 								</div>
 
-								<div style="width: 20%;" id="btn_producto" class="btn_add">
+								<div style="width: 35%;" id="btn_producto" class="mt-4">
 									<button class="btn btn-icon btn-outline-primary borderrad_left0 hover_primary" onclick="agregar_producto(event)">
 										<i class="fe fe-plus-circle"></i>
-									</button>
-									<button class="btn btn-icon btn-outline-warning borderrad_left0 hover_primary d-none" onclick="agregar_producto(event)">
-										<i class="fa fa-refresh"></i>
 									</button>
 								</div>
 							</div>
@@ -120,7 +152,41 @@
 							</div>
 						</div>
 
-						<div class="div_total">
+						<div class="div_sub_total_productos">
+							<article class="article_sub_total_productos d-flex">
+								<b><h5>Sub. Total: 0.00</h5></b> 
+							</article>
+						</div>
+
+						<div class="col-md-4">
+							<label for="{{$prefix}}_igv" class="col-form-label">IGV</label>
+
+							<div class="select2-{{$prefix}}_igv">
+								<select name="igv" id="{{$prefix}}_igv" class="form-control select2">
+									<option label="Seleccione si aplica IGV"></option>
+									<option value="1">No</option>
+									<option value="2">Si</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="col-md-4">
+							<label for="{{$prefix}}_hay_descuento" class="col-form-label">¿Descuento?</label>
+
+							<div class="select2-{{$prefix}}_hay_descuento">
+								<select name="hay_descuento" id="{{$prefix}}_hay_descuento" class="form-control select2">
+									<option label="Seleccione"></option>
+									<option value="1">No</option>
+									<option value="2">Si</option>
+								</select>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<label for="{{$prefix}}_descuento" class="col-form-label">Descuento</label>
+							<input class="form-control form-control-sm" type="text" placeholder="Precio de Venta" id="{{$prefix}}_descuento" name="descuento" value="0" disabled>
+						</div>
+
+						<div class="div_total mt-2">
 							<article class="article_total d-flex">
 								<b><h5>Total: 0.00</h5></b> 
 							</article>

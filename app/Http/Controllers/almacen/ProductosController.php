@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\almacen;
 
 use App\Http\Controllers\Controller;
-use App\Models\almacen\Marca;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
@@ -49,7 +48,6 @@ class ProductosController extends Controller
 
         $data["tipos_producto"] = TiposProducto::get();
         $data["unidades_medida"] = UnidadMedida::get();
-        $data["marcas"]         = Marca::get();
 
         if($id != null){
             $data["data"]      = Producto::find($id);
@@ -65,7 +63,7 @@ class ProductosController extends Controller
 
     public function grilla()
     {
-        $objeto = Producto::with('unidad_medida')->withTrashed()->get();
+        $objeto = Producto::with('unidad_medida')->withTrashed();
         return DataTables::of($objeto)
             ->addIndexColumn()
             ->addColumn("venta_directa_", function ($objeto) {
@@ -94,6 +92,7 @@ class ProductosController extends Controller
 
     public function store(Request $request)
     {
+        
         $this->validate($request, [
             'descripcion' => 'required',
             'idunidad_medida' => 'required',
@@ -142,8 +141,16 @@ class ProductosController extends Controller
     public function buscar($search){
         $search           = str_replace(' ', '', urldecode($search));;
 
-        $objeto     = Producto::whereRaw("REPLACE(descripcion,' ', '') ilike ?",["%".$search."%"])->where('id', '!=', 1);
+        $objeto     = Producto::whereRaw("descripcion like (?)", ["%{$search}%"])->where('id', '!=', 1);
 
+        $datos["search"]  = $objeto->take(10)->get();
+        return $datos;
+    }
+
+    public function buscar_carta($search){
+        $search           = str_replace(' ', '', urldecode($search));;
+
+        $objeto     = Producto::whereRaw("descripcion like (?)", ["%{$search}%"])->where('id', '!=', 1)->where('venta_directa', '=', 2);
         $datos["search"]  = $objeto->take(10)->get();
         return $datos;
     }
