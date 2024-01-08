@@ -26,8 +26,7 @@
 						<thead>
 							<tr>
 								<th width="05%">#</th>
-								<th width="30%">Producto</th>
-								<th width="20%">Venta directa</th>
+								<th width="50%">Producto</th>
 								<th width="20%">stock</th>
 								<th width="20%">Precio de Venta</th>
 								<th width="05%">Estado</th>

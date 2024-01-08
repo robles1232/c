@@ -14,14 +14,14 @@ use App\Models\almacen\Producto;
 use App\Models\almacen\TiposProducto;
 use App\Models\almacen\UnidadMedida;
 use App\Models\almacen\PresentacionesProducto;
-use App\Models\almacen\PresentacionProducto;
 
-class ProductosController extends Controller
+
+class IngredientesController extends Controller
 {
     protected $modulo = "Almacen";
-    protected $submodulo = "Productos";
+    protected $submodulo = "Ingredientes";
     protected $dir_modulo = "almacen";
-    protected $dir_submodulo = "productos";
+    protected $dir_submodulo = "ingredientes";
     protected $path_controller = null;
 
     protected $model = null;
@@ -48,7 +48,7 @@ class ProductosController extends Controller
         $data["prefix"]         = "";
         $data["data"]           = [];
 
-        $data["tipos_producto"] = TiposProducto::where('tipo', 2)->get();
+        $data["tipos_producto"] = TiposProducto::where('tipo', 1)->get();
         $data["unidades_medida"] = UnidadMedida::get();
 
         if($id != null){
@@ -65,7 +65,7 @@ class ProductosController extends Controller
 
     public function grilla()
     {
-        $objeto = Producto::where('tipo', 2)->with('unidad_medida')->withTrashed();
+        $objeto = Producto::where('tipo', 1)->with('unidad_medida')->withTrashed();
         return DataTables::of($objeto)
             ->addIndexColumn()
             ->addColumn("stock_", function ($objeto) {
@@ -90,13 +90,11 @@ class ProductosController extends Controller
             'descripcion' => 'required',
             'idtipo_producto' => 'required',
             'idunidad_medida' => 'required',
-            'precio_venta' => 'required|numeric'
+
         ], [
             'descripcion.required' => 'Debes escribir el nombre del producto',
-            'idtipo_producto.required' => 'Debes seleccionar el tipo de producto',
+            'idtipo_producto.required' => 'Debes seleccionar el tipo de ingrediente',
             'idunidad_medida.required' => 'Debes seleccionar la unidad de medida',
-            'precio_venta.required' => 'Debes escribir el precio de venta',
-            'precio_venta.numeric' => 'El precio de venta debe ser un número',
         ]);
 
         return DB::transaction(function() use ($request){
@@ -106,7 +104,7 @@ class ProductosController extends Controller
             }
 
             $obj->fill($request->all());
-            $obj->tipo = 2;
+            $obj->tipo = 1;
             $obj->save();
             
             PresentacionesProducto::where('idproducto', $obj->id)->delete();
@@ -151,18 +149,5 @@ class ProductosController extends Controller
 
         $datos["search"]  = $objeto->take(10)->get();
         return $datos;
-    }
-
-    public function buscar_carta($search){
-        $search           = str_replace(' ', '', urldecode($search));;
-
-        $objeto     = Producto::whereRaw("descripcion like (?)", ["%{$search}%"])->where('id', '!=', 1)->where('tipo', 2);
-        $datos["search"]  = $objeto->take(10)->get();
-        return $datos;
-    }
-
-    public function getPresentaciones($idproducto){
-        $data = PresentacionesProducto::with('presentacion')->where('idproducto', $idproducto)->get();
-        return response()->json($data);
     }
 }

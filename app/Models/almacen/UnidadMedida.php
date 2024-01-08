@@ -22,4 +22,8 @@ class UnidadMedida extends Model
     public function getTableName(){
         return $this->table;
     }
+
+    public function productos(){
+        return $this->hasMany(Producto::class, 'idunidad_medida');
+    }
 }

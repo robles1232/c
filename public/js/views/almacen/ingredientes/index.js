@@ -5,8 +5,8 @@ $(document).ready(function() {
 
 //------------------------------------------------------------- Datatable
 const load_datatable = () => {
-    table = $('#dt-' + _dir_submodulo_almacen_productos).DataTable({
-        ajax: route(_dir_submodulo_almacen_productos + ".grilla"),
+    table = $('#dt-' + _dir_submodulo_almacen_ingredientes).DataTable({
+        ajax: route(_dir_submodulo_almacen_ingredientes + ".grilla"),
         columns: [{
                 data: 'DT_RowIndex',
                 orderable: false,
@@ -20,12 +20,6 @@ const load_datatable = () => {
             },
             {
                 data: 'stock_',
-                orderable: true,
-                searchable: false,
-                className: 'text-center',
-            },
-                        {
-                data: 'precio_venta',
                 orderable: true,
                 searchable: false,
                 className: 'text-center',
@@ -47,15 +41,15 @@ const load_datatable = () => {
 
 $("#btn-create").on("click", function(e) {
     e.preventDefault();
-    form.get(_dir_submodulo_almacen_productos).nuevo();
+    form.get(_dir_submodulo_almacen_ingredientes).nuevo();
 });
 
 //------------------------------------------------------------- Editar
 $("#btn-edit").on("click", function(e) {
     e.preventDefault()
-    var id = grilla.get_id(_dir_submodulo_almacen_productos)
+    var id = grilla.get_id(_dir_submodulo_almacen_ingredientes)
     if (id != null) {
-        form.get(_dir_submodulo_almacen_productos).editar(id)
+        form.get(_dir_submodulo_almacen_ingredientes).editar(id)
     } else {
         alertas.warning("Ups..!")
     }
@@ -64,9 +58,9 @@ $("#btn-edit").on("click", function(e) {
 //------------------------------------------------------------- Eliminar
 $("#btn-destroy").on("click", function(e) {
     e.preventDefault()
-    var id = grilla.get_id(_dir_submodulo_almacen_productos)
+    var id = grilla.get_id(_dir_submodulo_almacen_ingredientes)
     if (id != null) {
-        form.get(_dir_submodulo_almacen_productos).eliminar_restaurar(id, this)
+        form.get(_dir_submodulo_almacen_ingredientes).eliminar_restaurar(id, this)
     } else {
         alertas.warning("Ups..!")
     }

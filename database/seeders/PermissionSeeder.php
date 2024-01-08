@@ -85,6 +85,12 @@ class PermissionSeeder extends Seeder
             'store-proveedores',
             'destroy-proveedores',
 
+            'index-ingredientes',
+            'create-ingredientes',
+            'edit-ingredientes',
+            'store-ingredientes',
+            'destroy-ingredientes',
+
             'index-productos',
             'create-productos',
             'edit-productos',

@@ -39,13 +39,16 @@ form.register(_dir_submodulo_almacen_proveedores,{
     guardar: function() {
         var $self = this
         let _form = "#form-" + _dir_submodulo_almacen_proveedores
-        let post_data = $(_form).serialize()
+        let post_data = new FormData($(_form)[0])
+        post_data.append("descripcion", descripcion);
+        post_data.append("ruc", ruc_);
 
         $.ajax({
             url: route(_dir_submodulo_almacen_proveedores + '.store'),
             type: 'POST',
             data: post_data,
             cache: false,
+            contentType: false,
             processData: false,
             beforeSend: function() {},
             success: function(response) {

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\almacen;
 
 use App\Http\Controllers\Controller;
+use App\Models\almacen\PresentacionesProducto;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
@@ -100,6 +101,7 @@ class PresentacionProductosController extends Controller
             $obj->fill($request->all());
             $obj->save();
     
+
             return response()->json($obj);
         });
     }
@@ -119,5 +121,11 @@ class PresentacionProductosController extends Controller
         }
         $obj->restore();
         return response()->json();
+    }
+
+    public function getPresentacion_producto($idunidad_medida){
+        $data = PresentacionProducto::where('idunidad_medida', $idunidad_medida)->get();
+
+        return response()->json($data);
     }
 }

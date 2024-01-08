@@ -21,6 +21,7 @@ class Compra extends Model
         'fecha_compra',
         'igv',
         'hay_descuento',
+        'tipo_compra', // 1 == Contado || 2 == crédito
         'descuento',
         'deleted_at'
     ];
@@ -34,5 +35,9 @@ class Compra extends Model
     }
     public function detalle_compra(){
         return $this->hasMany(DetalleCompra::class, 'idcompra');
+    }
+
+    public function compras_credito(){
+        return $this->hasMany(CompraCredito::class, 'idcompra');
     }
 }

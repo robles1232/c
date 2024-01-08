@@ -118,7 +118,7 @@ class SeccionCartaController extends Controller
     public function buscar($search){
         $search           = str_replace(' ', '', urldecode($search));;
 
-        $objeto     = SeccionCarta::whereRaw("REPLACE(descripcion,' ', '') ilike ?",["%".$search."%"]);
+        $objeto     = SeccionCarta::whereRaw("descripcion like (?)", ["%{$search}%"]);
 
         $datos["search"]  = $objeto->take(10)->get();
         return $datos;

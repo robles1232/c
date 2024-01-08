@@ -17,9 +17,21 @@
 					<input type="hidden" name="id" id="{{$prefix}}_id">
 
 					<div class="form-group form-row">
-						<div class="col-md-12">
+						<div class="col-md-6">
 							<label for="{{$prefix}}_descripcion" class="col-form-label">Nombre</label>
 							<input class="form-control form-control-sm" type="text" placeholder="Nombre del Tipo de Producto" id="{{$prefix}}_descripcion" name="descripcion">
+						</div>
+
+						<div class="col-md-6">
+							<label for="{{$prefix}}_tipo" class="col-form-label">Tipo</label>
+
+							<div class="select2-{{$prefix}}_tipo">
+								<select name="tipo" id="{{$prefix}}_tipo" class="form-control select2">
+									<option label="Seleccione el Tipo"></option>
+									<option value="1">Ingrediente</option>
+									<option value="2">Producto</option>
+								</select>
+							</div>
 						</div>
 					</div>
 				</div>

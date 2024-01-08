@@ -366,6 +366,10 @@ const md_guardar = (e, obj) => {
             form.get(accion[1]).guardar_update()
             break
 
+        case "guardar_pay":
+            form.get(accion[1]).guardar_pay()
+            break
+
         default:
             form.get(accion[1]).guardar()
             break

@@ -26,12 +26,9 @@
 						<thead>
 							<tr>
 								<th width="05%">#</th>
-								<th width="10%">Serie</th>
-								<th width="10%">Comprobante</th>
-								<th width="50%">Proveedor</th>
-								<th width="10%">Total</th>
-								<th width="05%">Tipo</th>
-								<th width="10%">Acciones</th>
+								<th width="70%">Ingrediente</th>
+								<th width="20%">stock</th>
+								<th width="05%">Estado</th>
 							</tr>
 						</thead>
 						<tbody>

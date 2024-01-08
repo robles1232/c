@@ -40,11 +40,17 @@ const load_datatable = () => {
             },
 
             {
-                data: 'activo',
+                data: 'tipo',
                 orderable: false,
                 searchable: false,
                 className: "text-center"
             },
+            {
+                data: 'acciones',
+                orderable: false,
+                searchable: false,
+                className: "text-center"
+            }
 
         ],
         order: [
@@ -80,4 +86,13 @@ $("#btn-destroy").on("click", function(e) {
         alertas.warning("Ups..!")
     }
 })
+
+function form_watch(id){
+    form.get(_dir_submodulo_almacen_compras).form_watch(id, this)
+    
+}
+
+function form_pay(id){
+    form.get(_dir_submodulo_almacen_compras).form_pay(id, this)
+}
 

@@ -5,16 +5,18 @@ namespace App\Models\almacen;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class TiposProducto extends Model
+
+class CompraCredito extends Model
 {
     use SoftDeletes;
 
-    protected $table        = "tipos_producto";
+    protected $table        = "compra_credito";
     protected $primaryKey   = "id";
 
     protected $fillable = [
-        'tipo',
-        'descripcion',
+        'idcompra',
+        'letra',
+        'fecha_pago',
         'deleted_at'
     ];
 
@@ -22,7 +24,7 @@ class TiposProducto extends Model
         return $this->table;
     }
 
-    public function productos(){
-        return $this->hasMany(Producto::class, 'idtipo_producto');
+    public function compra(){
+        return $this->belongsTo(Compra::class, 'idcompra');
     }
 }

@@ -26,7 +26,7 @@ form.register(_dir_submodulo_almacen_tipos_producto,{
                 error: function(e) {
                     if (e.status == 422) { //Errores de Validacion
                         $.each(e.responseJSON.errors, function(i, item) {
-                            if (i == 'error_persona')
+                            if (i == 'referencias')
                                 return toastr.warning(item, msj_modulo)
                         })
                     }else {

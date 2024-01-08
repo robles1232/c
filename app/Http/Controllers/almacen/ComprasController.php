@@ -11,6 +11,7 @@ use Illuminate\Validation\ValidationException;
 
 use App\Models\seguridad\Funcion;
 use App\Models\almacen\Compra;
+use App\Models\almacen\CompraCredito;
 use App\Models\almacen\DetalleCompra;
 use App\Models\almacen\Producto;
 use App\Models\almacen\PresentacionProducto;
@@ -49,9 +50,8 @@ class ComprasController extends Controller
         $data["data"]           = [];
 
         if($id != null){
-            $data["data"]      = Compra::with('proveedor')->with('detalle_compra.producto')->find($id);
+            $data["data"]      = Compra::with('proveedor')->with('detalle_compra.producto')->with('compras_credito')->find($id);
         }
-
         return $data;
     }
 
@@ -84,10 +84,22 @@ class ComprasController extends Controller
 
                 return "S/. ".number_format($total, 2, '.', '');
             })
-            ->addColumn("activo", function ($objeto) {
-                return (is_null($objeto->deleted_at)) ? '<span class="dot-label bg-success" title="Activo">Activo</span>' : '<span class="dot-label bg-danger" title="Inactivo">Eliminado</span>';
+            ->addColumn("tipo", function ($objeto) {
+                $tipo = "Contado";
+                if($objeto->tipo_compra == 2)
+                    $tipo = "Crédito";
+                return $tipo;
             })
-            ->rawColumns(["proveedor", "total", "activo"])
+            ->addColumn("acciones", function ($objeto) {
+                $btn = "";
+                if($objeto->tipo_compra == 2){
+                    $btn_watch = '<a href="#" id="btn-watch" class="btn btn-outline-info" onclick="form_watch('.$objeto->id.')"><i class="fa fa-eye"></i></a>';
+                    $btn_pay = '<a href="#" id="btn-pay" class="btn btn-outline-success" onclick="form_pay('.$objeto->id.')"><i class="fa fa-money"></i></a>';
+                    $btn = $btn_watch.$btn_pay;
+                }
+                return $btn;
+            })
+            ->rawColumns(["proveedor", "total", "tipo", 'acciones'])
             ->make(true);
     }
 
@@ -98,6 +110,7 @@ class ComprasController extends Controller
 
     public function store(Request $request)
     {
+        
         $this->validate($request, [
             'descripcion_proveedor' => 'required',
             'tipo_comprobante' => 'required',
@@ -106,7 +119,8 @@ class ComprasController extends Controller
             'fecha_compra' => 'required|date',
             'igv' => 'required',
             'hay_descuento' => 'required',
-            'descuento' => 'required_if:hay_descuento,=,2'
+            'descuento' => 'required_if:hay_descuento,=,2',
+            'tipo_compra' => 'required_if:id,!=,null'
         ], [
             'descripcion_proveedor.required' => 'Debes seleccionar el proveedor',
             'tipo_comprobante.required'  => 'Debes seleccionar el tipo de comprobante',
@@ -116,7 +130,9 @@ class ComprasController extends Controller
             'fecha_compra.date' => 'La fecha de compra debe tener el formato de fecha DD/MM/YYYY',
             'igv.required' => 'Indica si se aplica el IGV',
             'hay_descuento.required' => 'Indica si hay algún descuento',
-            'descuento.required_if' => 'Debes escribir el monto del descuento'
+            'descuento.required_if' => 'Debes escribir el monto del descuento',
+            'tipo_compra.required' => 'Seleccione el tipo de compra',
+
         ]);
 
         return DB::transaction(function() use ($request){
@@ -172,6 +188,7 @@ class ComprasController extends Controller
                     $presentacion = PresentacionProducto::where('id', $value["idpresentacion_producto"])->first();
                     $prod->increment('stock', $value["cantidad"]*$presentacion->cantidad);
                 }
+                $prod->precio_venta = $value["precio_venta"];
                 $prod->save();
             }
             return response()->json($obj);
@@ -211,4 +228,35 @@ class ComprasController extends Controller
         
         return response()->json();
     }
+
+    public function form_watch($id){
+        return view($this->dir_modulo.'/'.$this->dir_submodulo."/form_watch", $this->form($id));
+
+
+    }
+
+    public function form_pay($id){
+        return view($this->dir_modulo.'/'.$this->dir_submodulo."/form_pay", $this->form($id));
+    }
+
+    public function pay(Request $request){
+        $this->validate($request, [
+            'fecha_pago' => 'required',
+            'letra' => 'required|numeric',
+        ], [
+            'fecha_pago.required' => 'Debes seleccionar la fecha de pago.',
+            'letra.required'  => 'Debes escribir el monto pagado.',
+            'letra.numeric'  => 'El monto pagado debe ser un número.',
+        ]);
+
+        return DB::transaction(function() use ($request){
+            $obj = new CompraCredito();
+            $obj->fill($request->all());
+            $obj->idcompra = $request->id;
+            $obj->save();
+
+            return response()->json($obj);
+        });
+    }
+
 }

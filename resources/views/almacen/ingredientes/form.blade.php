@@ -18,12 +18,12 @@
 
 					<div class="form-group form-row">
 						<div class="col-md-12">
-							<label for="{{$prefix}}_descripcion" class="col-form-label">Producto</label>
-							<input class="form-control form-control-sm" type="text" placeholder="Nombre del Producto" id="{{$prefix}}_descripcion" name="descripcion">
+							<label for="{{$prefix}}_descripcion" class="col-form-label">Ingrediente</label>
+							<input class="form-control form-control-sm" type="text" placeholder="Nombre del Ingrediente" id="{{$prefix}}_descripcion" name="descripcion">
 						</div>
 
 						<div class="col-md-6">
-							<label for="{{$prefix}}_idtipo_producto" class="col-form-label">Tipo de Producto</label>
+							<label for="{{$prefix}}_idtipo_producto" class="col-form-label">Tipo de Ingrediente</label>
 
 							<div class="select2-{{$prefix}}_idtipo_producto">
 								<select name="idtipo_producto" id="{{$prefix}}_idtipo_producto" class="form-control select2">
@@ -45,10 +45,6 @@
 									@endforeach
 								</select>
 							</div>
-						</div>
-						<div class="col-md-6">
-							<label for="{{$prefix}}_precio_venta" class="col-form-label">Precio de Venta</label>
-							<input class="form-control form-control-sm" type="text" placeholder="Precio de Venta" id="{{$prefix}}_precio_venta" name="precio_venta">
 						</div>
 
 						<div class="col-md-12 form-row d-flex">

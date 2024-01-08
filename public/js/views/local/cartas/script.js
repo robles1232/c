@@ -189,7 +189,7 @@ function init(){
                 let pl_pr = {id: sec_det.id, tipo: sec_det.tipo, idplato_producto: 0, descripcion: '', precio_venta: '' }
                 if(sec_det.plato ){
                     pl_pr.idplato_producto = sec_det.idplato
-                    pl_pr.descripcion = sec_det.plato.descripcion
+                    pl_pr.descripcion = sec_det.plato.nombre
                     pl_pr.precio_venta = sec_det.plato.precio_venta
                 }
 

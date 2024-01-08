@@ -13,12 +13,12 @@ class Producto extends Model
     protected $primaryKey   = "id";
 
     protected $fillable = [
-        'idtipo_producto', // 
+        'idtipo_producto', 
+        'tipo', // 1 == ingrediente || 2 == producto
         'idunidad_medida',
         'descripcion',
         'stock',
         'precio_venta',
-        'venta_directa',
         'por_defecto',
         'deleted_at'
     ];
@@ -29,6 +29,10 @@ class Producto extends Model
 
     public function unidad_medida(){
         return $this->belongsTo(UnidadMedida::class, 'idunidad_medida');
+    }
+
+    public function presentaciones_producto(){
+        return $this->hasMany(PresentacionesProducto::class, 'idproducto');
     }
 
     public function getTableName(){

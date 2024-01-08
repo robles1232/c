@@ -106,6 +106,10 @@ class UnidadesMedidaController extends Controller
         $obj = UnidadMedida::withTrashed()->find($request->id);
 
         if ($request->accion == "eliminar") {
+            if($obj->productos->isNotEmpty()){
+                throw ValidationException::withMessages(["referencias" => "Esta unidad de medida no se puede eliminar puesto que ya está relacionado con uno o más productos"]);
+
+            }
             $obj->delete();
             return response()->json($obj);
         }

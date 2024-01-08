@@ -164,6 +164,39 @@ class S2_AlmacenSeeder extends Seeder
         $funcion_submodulo->idfuncion   = 4;
         $funcion_submodulo->save();
 
+        /**INGREDIENTES */
+        $submodulo = new Submodulo();
+        $submodulo->idmodulo    = $modulo->id;
+        $submodulo->descripcion = "Ingredientes";
+        $submodulo->abreviatura = "ingdts.";
+        $submodulo->url         = "ingredientes";
+        $submodulo->orden       = 5;
+        $submodulo->save();
+
+        $accesos = new Accesos();
+        $accesos->idsubmodulo = $submodulo->id;
+        $accesos->idrol = 1;
+        $accesos->save();
+
+        $funcion_submodulo = new FuncionSubmodulo();
+        $funcion_submodulo->idsubmodulo = $submodulo->id;;
+        $funcion_submodulo->idfuncion   = 1;
+        $funcion_submodulo->save();
+
+        $funcion_submodulo = new FuncionSubmodulo();
+        $funcion_submodulo->idsubmodulo = $submodulo->id;;
+        $funcion_submodulo->idfuncion   = 2;
+        $funcion_submodulo->save();
+
+        $funcion_submodulo = new FuncionSubmodulo();
+        $funcion_submodulo->idsubmodulo = $submodulo->id;;
+        $funcion_submodulo->idfuncion   = 3;
+        $funcion_submodulo->save();
+
+        $funcion_submodulo = new FuncionSubmodulo();
+        $funcion_submodulo->idsubmodulo = $submodulo->id;;
+        $funcion_submodulo->idfuncion   = 4;
+        $funcion_submodulo->save();
 
         /**PRODUCTOS */
         $submodulo = new Submodulo();
@@ -171,7 +204,7 @@ class S2_AlmacenSeeder extends Seeder
         $submodulo->descripcion = "Productos";
         $submodulo->abreviatura = "pr.";
         $submodulo->url         = "productos";
-        $submodulo->orden       = 5;
+        $submodulo->orden       = 6;
         $submodulo->save();
 
         $accesos = new Accesos();
@@ -205,7 +238,7 @@ class S2_AlmacenSeeder extends Seeder
         $submodulo->descripcion = "Compras";
         $submodulo->abreviatura = "cr.";
         $submodulo->url         = "compras";
-        $submodulo->orden       = 6;
+        $submodulo->orden       = 7;
         $submodulo->save();
 
         $accesos = new Accesos();

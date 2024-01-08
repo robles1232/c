@@ -1,46 +1,23 @@
 var array_presentaciones_producto = [];
 
-$("#form-"+_dir_submodulo_almacen_productos).on('focus', '.is_invalid', function(e){
+$("#form-"+_dir_submodulo_almacen_ingredientes).on('focus', '.is_invalid', function(e){
     e.preventDefault()
     toastr.remove();
     toastr.error($(this).data('invalid'), msj_modulo)
 })
 
-$("#form-"+_dir_submodulo_almacen_productos).on('click', '.select2-is_invalid', function(e){
+$("#form-"+_dir_submodulo_almacen_ingredientes).on('click', '.select2-is_invalid', function(e){
     e.preventDefault()
     toastr.remove();
     toastr.error($(this).data('invalid'), msj_modulo)
 })
-
-
-if(data_form.venta_directa == 2){
-    $("#"+_prefix_almacen_productos+"_venta_directa").val(2)
-    $("#"+_prefix_almacen_productos+"_precio_venta").attr("disabled", false)
-}
-
-if(data_form.venta_directa == 1){
-    $("#"+_prefix_almacen_productos+"_venta_directa").val(1)
-    $("#"+_prefix_almacen_productos+"_precio_venta").attr("disabled", true)
-}
-
-$("#"+_prefix_almacen_productos+"_venta_directa").change(function(e){
-    if($(this).val() == 1){
-        $("#"+_prefix_almacen_productos+"_precio_venta").val(0)
-        $("#"+_prefix_almacen_productos+"_precio_venta").attr("disabled", true)
-    }
-
-    if($(this).val() == 2){
-        $("#"+_prefix_almacen_productos+"_precio_venta").attr("disabled", false)
-    }
-});
-
 
 /*------------------------------PRESENTACIONES------------------------------------*/
 if(data_form.idunidad_medida != null){//GET DIMENSIÓN
     getPresentaciones_prodcuto(data_form.idunidad_medida)
 }
 
-$("#"+_prefix_almacen_productos+"_idunidad_medida").change(function(e){// GET DIMENSIÓN
+$("#"+_prefix_almacen_ingredientes+"_idunidad_medida").change(function(e){// GET DIMENSIÓN
     e.preventDefault();
     getPresentaciones_prodcuto($(this).val());
 })
@@ -53,9 +30,9 @@ function getPresentaciones_prodcuto(idunidad_medida){
         },
         success: function(response) {
             //loading('end', ".select2-iddimension_")
-            $("#"+_prefix_almacen_productos+"_idpresentacion_producto").attr("disabled", false);
-            $("#"+_prefix_almacen_productos+"_idpresentacion_producto").html('');
-            var select = document.getElementById(_prefix_almacen_productos+"_idpresentacion_producto");
+            $("#"+_prefix_almacen_ingredientes+"_idpresentacion_producto").attr("disabled", false);
+            $("#"+_prefix_almacen_ingredientes+"_idpresentacion_producto").html('');
+            var select = document.getElementById(_prefix_almacen_ingredientes+"_idpresentacion_producto");
 
             let opt_lab = document.createElement('option');
                 opt_lab.setAttribute('label', 'Seleccione');
@@ -75,7 +52,7 @@ function getPresentaciones_prodcuto(idunidad_medida){
                 limpieza(_path_controller_proceso_uno);
                 $.each(e.responseJSON.errors, function(i, item) {
                     if (i == 'referencias') {
-                        toastr.warning(item, msj_modulo)
+                        toastr.warning(item, 'Notificación de Módulo Factor')
                     }
 
                 });
@@ -92,18 +69,18 @@ function agregar_presentacion_producto(e) {
     var data = []
     var index_repetido = ""
 
-    const idunidad_medida = $("#"+_prefix_almacen_productos+"_idunidad_medida").val()
-    const idpresentacion_producto = $("#"+_prefix_almacen_productos+"_idpresentacion_producto").val()
-    const descripcion = $("#"+_prefix_almacen_productos+"_idpresentacion_producto").find(":selected").text();
+    const idunidad_medida = $("#"+_prefix_almacen_ingredientes+"_idunidad_medida").val()
+    const idpresentacion_producto = $("#"+_prefix_almacen_ingredientes+"_idpresentacion_producto").val()
+    const descripcion = $("#"+_prefix_almacen_ingredientes+"_idpresentacion_producto").find(":selected").text();
 
     if(idunidad_medida.length == 0){
-        $("#form-" + _dir_submodulo_almacen_productos + " #"+_prefix_almacen_productos+ "_idunidad_medida").focus();
+        $("#form-" + _dir_submodulo_almacen_ingredientes + " #"+_prefix_almacen_ingredientes+ "_idunidad_medida").focus();
         toastr.warning("Primero debes seleccionar la unidad de medida", msj_modulo)
         return false
     }
 
     if(idpresentacion_producto.length == 0){
-        $("#form-" + _dir_submodulo_almacen_productos + " #"+_prefix_almacen_productos+ "_idpresentacion_producto").focus();
+        $("#form-" + _dir_submodulo_almacen_ingredientes + " #"+_prefix_almacen_ingredientes+ "_idpresentacion_producto").focus();
         toastr.warning("Debes seleccionar la presentacion del producto", msj_modulo)
         return false
     }
@@ -115,7 +92,7 @@ function agregar_presentacion_producto(e) {
     })
 
     if (index_repetido.length != 0) {
-        $("#form-" + _dir_submodulo_almacen_productos + " #"+_prefix_almacen_productos+ "_idpresentacion_producto").focus();
+        $("#form-" + _dir_submodulo_almacen_ingredientes + " #"+_prefix_almacen_ingredientes+ "_idpresentacion_producto").focus();
         toastr.warning("Presentación de producto ya registrado", msj_modulo)
         $("#id_tr_presentacion_producto" + index_repetido).addClass("selected_red")
         return false
@@ -124,7 +101,7 @@ function agregar_presentacion_producto(e) {
 
     data = { id: "", idpresentacion_producto: idpresentacion_producto, descripcion: descripcion, editar: 1}
     array_presentaciones_producto.push(data)
-    $("#"+_prefix_almacen_productos+"_idpresentacion_producto").val("").trigger("change")
+    $("#"+_prefix_almacen_ingredientes+"_idpresentacion_producto").val("").trigger("change")
     
     document.getElementById("table_presentaciones_producto").innerHTML = ""
     create_table_presentaciones_producto()

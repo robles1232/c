@@ -24,6 +24,7 @@ class CreateTableCompras extends Migration
             $table->date('fecha_compra');
             $table->unsignedBigInteger('igv')->default(1);
             $table->unsignedBigInteger('hay_descuento')->default(1);
+            $table->unsignedBigInteger('tipo_compra')->default(1)->comment("1 == Contado || 2 == Crédito");
             $table->decimal('descuento', 8,2)->default(0);
             $table->timestamps();
             $table->softDeletes();

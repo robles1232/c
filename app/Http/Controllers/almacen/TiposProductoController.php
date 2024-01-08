@@ -45,7 +45,7 @@ class TiposProductoController extends Controller
         $data["data"]           = [];
 
         if($id != null){
-            $data["data"]      = TiposProducto::with('categorias')->find($id);
+            $data["data"]      = TiposProducto::find($id);
         }
 
         return $data;
@@ -77,9 +77,11 @@ class TiposProductoController extends Controller
     {
         $this->validate($request, [
             'descripcion' => ['required',  Rule::unique("{$this->driver_current}.{$this->model->getTableName()}", "descripcion")->ignore($request->id, "id")],
+            'tipo' => 'required',
         ], [
             'descripcion.required' => 'Debes escribir el Tipo de Producto',
             'descripcion.unique' => 'Este Tipo de Producto ya está registrado',
+            'tipo.required' => 'Seleccione el tipo',
         ]);
 
         return DB::transaction(function() use ($request){
@@ -102,9 +104,13 @@ class TiposProductoController extends Controller
 
     public function destroy(Request $request)
     {   
-        $obj = TiposProducto::withTrashed()->find($request->id);
+        $obj = TiposProducto::with('productos')->withTrashed()->find($request->id);
 
         if ($request->accion == "eliminar") {
+            if($obj->productos->isNotEmpty()){
+                throw ValidationException::withMessages(["referencias" => "Este tipo de producto no se puede eliminar puesto que ya está relacionado con uno o más productos"]);
+
+            }
             $obj->delete();
             return response()->json($obj);
         }

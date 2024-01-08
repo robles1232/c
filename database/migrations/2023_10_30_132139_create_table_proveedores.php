@@ -17,8 +17,8 @@ class CreateTableProveedores extends Migration
             $table->id();
             $table->string('descripcion');
             $table->string('ruc');
-            $table->string('direccion');
-            $table->string('telefono');
+            $table->string('direccion')->nullable();
+            $table->string('telefono')->nullable();
             
             $table->timestamps();
             $table->softDeletes();

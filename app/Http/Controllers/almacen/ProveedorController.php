@@ -76,16 +76,10 @@ class ProveedorController extends Controller
     {
         $this->validate($request, [
             'descripcion' => 'required',
-            'ruc' => 'required|integer|digits:11',
-            'direccion' => 'required',
-            'telefono' => 'required',
+            'ruc' => 'required',
         ], [
             'descripcion.required' => 'Debes escribir la Razón social del Proveedor',
             'ruc.required' => 'Debes escribir el ruc del proveedor',
-            'ruc.integer' => 'El ruc debe ser un número de 11 dígitos',
-            'ruc.digits' => 'El ruc debe ser un número de 11 dígitos',
-            'direccion.required' => 'Debes escribir la dirección del proveedor',
-            'telefono.required' => 'Debes escribir el teléfono del proveedor',
         ]);
         return DB::transaction(function() use ($request){
             $obj = Proveedor::withTrashed()->find($request->id);
@@ -123,5 +117,28 @@ class ProveedorController extends Controller
 
         $datos["search"]  = $objeto->take(10)->get();
         return $datos;
+    }
+
+    public function consulta_ruc($ruc){
+        
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://dniruc.apisperu.com/api/v1/ruc/' . $ruc . '?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImN2ZWdhZ0Bob3RtYWlsLmNvbSJ9.pTHRdktUddFWRcSqrbi9CCRNDelFEfvHTD8Fa85Se5Q',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+            
+        $data = json_decode($response, true);
+        return response()->json($data);
     }
 }

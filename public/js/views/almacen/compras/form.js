@@ -5,6 +5,12 @@ form.register(_dir_submodulo_almacen_compras,{
     editar: function(id){
         get_modal(_dir_submodulo_almacen_compras, _prefix_almacen_compras, "edit", id)
     },
+    form_watch: function(id){
+        get_modal(_dir_submodulo_almacen_compras, _prefix_almacen_compras, "form_watch", id)
+    },
+    form_pay: function(id){
+        get_modal(_dir_submodulo_almacen_compras, _prefix_almacen_compras, "form_pay", id)
+    },
     eliminar_restaurar: function(id, obj){
         var $self = this
         let accion__ = obj.getAttribute('data-action')
@@ -45,6 +51,7 @@ form.register(_dir_submodulo_almacen_compras,{
             post_data.append("productos[" + index + "][index]", index)
             post_data.append("productos[" + index + "][id]", datos.id)
             post_data.append("productos[" + index + "][idproducto]", datos.idproducto)
+            post_data.append("productos[" + index + "][precio_venta]", datos.precio_venta)
             post_data.append("productos[" + index + "][tipo_presentacion]", datos.tipo_presentacion)
             post_data.append("productos[" + index + "][idpresentacion_producto]", datos.idpresentacion_producto)
             post_data.append("productos[" + index + "][cantidad]", datos.cantidad)
@@ -95,6 +102,42 @@ form.register(_dir_submodulo_almacen_compras,{
                 }
             }
         })
+    },
+    guardar_pay: function(){
+        var $self = this
+        let _form = "#form-" + _dir_submodulo_almacen_compras
+        let post_data = new FormData($(_form)[0])
+        $.ajax({
+            url: route(_dir_submodulo_almacen_compras + '.pay'),
+            type: 'POST',
+            data: post_data,
+            cache: false,
+            contentType: false,
+            processData: false,
+            beforeSend: function() {},
+            success: function(response) {
+                toastr.success('Datos grabados correctamente', msj_modulo)
+                $self.callback(response)
+                close_modal(_dir_submodulo_almacen_compras)
+            },
+            complete: function() {},
+            error: function(e) {
+                if (e.status == 422) { //Errores de Validacion
+                    toastr.remove();
+                    limpieza(_dir_submodulo_almacen_compras)
+                    $.each(e.responseJSON.errors, function(i, item) {
+                        $('#'+ _prefix_almacen_compras+ "_" + i ).addClass('is_invalid')
+                        $('#'+ _prefix_almacen_compras+ "_" + i ).attr('data-invalid', item)
+
+                        $('.select2-' + _prefix_almacen_compras + "_" + i).addClass('select2-is_invalid');
+                        $('.select2-' + _prefix_almacen_compras + "_" + i).attr('data-invalid', item);
+
+                    })
+                } else {
+                    mostrar_errores_externos(e)
+                }
+            }
+        })        
     },
     callback: function(data) {
         grilla.reload(_dir_submodulo_almacen_compras)

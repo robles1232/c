@@ -65,10 +65,12 @@ class AlmacenSeeder extends Seeder
         //------------------TIPO DE PRODUCTOS
         $obj = new TiposProducto();
         $obj->descripcion = "Bebida";
+        $obj->tipo = 2;
         $obj->save();
 
         $obj = new TiposProducto();
-        $obj->descripcion = "Ingredientes";
+        $obj->descripcion = "Fruta";
+        $obj->tipo = 1;
         $obj->save();
 
         //-----------------PROVEEDORES
@@ -82,8 +84,8 @@ class AlmacenSeeder extends Seeder
         //-------------------PRODUCTOS
         $obj = new Producto();
         $obj->descripcion = "Delivery";
+        $obj->tipo = 2;
         $obj->idunidad_medida = 1;
-        $obj->venta_directa = 2;
         $obj->precio_venta = "3.00";
         $obj->por_defecto = true;
         $obj->stock = 999;
@@ -91,33 +93,33 @@ class AlmacenSeeder extends Seeder
 
         $obj = new Producto();
         $obj->idtipo_producto = 1;
+        $obj->tipo = 2;
         $obj->idunidad_medida = 1;
         $obj->descripcion = "Inka kola 250ml";
-        $obj->venta_directa = 2;
         $obj->precio_venta = "3.00";
         $obj->save();
 
         $obj = new Producto();
         $obj->idtipo_producto = 1;
+        $obj->tipo = 2;
         $obj->idunidad_medida = 1;
         $obj->descripcion = "Inka kola 1L";
-        $obj->venta_directa = 2;
         $obj->precio_venta = "10.00";
         $obj->save();
 
         $obj = new Producto();
         $obj->idtipo_producto = 1;
+        $obj->tipo = 2;
         $obj->idunidad_medida = 1;
         $obj->descripcion = "Pilsen callao 250";
-        $obj->venta_directa = 2;
         $obj->precio_venta = "7.00";
         $obj->save();
 
         $obj = new Producto();
         $obj->idtipo_producto = 2;
+        $obj->tipo = 1;
         $obj->idunidad_medida = 2;
         $obj->descripcion = "Cocona";
-        $obj->venta_directa = 1;
         $obj->save();
     }
 }

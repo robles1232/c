@@ -1,9 +1,9 @@
-form.register(_dir_submodulo_almacen_productos,{
+form.register(_dir_submodulo_almacen_ingredientes,{
     nuevo: function(){
-        get_modal(_dir_submodulo_almacen_productos, _prefix_almacen_productos)
+        get_modal(_dir_submodulo_almacen_ingredientes, _prefix_almacen_ingredientes)
     },
     editar: function(id){
-        get_modal(_dir_submodulo_almacen_productos, _prefix_almacen_productos, "edit", id)
+        get_modal(_dir_submodulo_almacen_ingredientes, _prefix_almacen_ingredientes, "edit", id)
     },
     eliminar_restaurar: function(id, obj){
         var $self = this
@@ -13,7 +13,7 @@ form.register(_dir_submodulo_almacen_productos,{
         swal({ title: "Confirmar", text: "¿Desea " + accion__ + " el registro seleccionado?", type: "warning", showCancelButton: !0, confirmButtonText: "Confirmar", cancelButtonText: "Cancelar" }, function() {
 
             $.ajax({
-                url: route(_dir_submodulo_almacen_productos + '.destroy', 'delete'),
+                url: route(_dir_submodulo_almacen_ingredientes + '.destroy', 'delete'),
                 data: { id: id, accion: accion__ },
                 type: 'DELETE',
                 beforeSend: function() {},
@@ -38,7 +38,7 @@ form.register(_dir_submodulo_almacen_productos,{
     },
     guardar: function() {
         var $self = this
-        let _form = "#form-" + _dir_submodulo_almacen_productos
+        let _form = "#form-" + _dir_submodulo_almacen_ingredientes
         let post_data = new FormData($(_form)[0])
         array_presentaciones_producto.forEach((data, index) =>{
             post_data.append("presentaciones_producto[" + index + "][index]", index)
@@ -46,7 +46,7 @@ form.register(_dir_submodulo_almacen_productos,{
             post_data.append("presentaciones_producto[" + index + "][idpresentacion_producto]", data.idpresentacion_producto)
         })
         $.ajax({
-            url: route(_dir_submodulo_almacen_productos + '.store'),
+            url: route(_dir_submodulo_almacen_ingredientes + '.store'),
             type: 'POST',
             data: post_data,
             cache: false,
@@ -56,19 +56,19 @@ form.register(_dir_submodulo_almacen_productos,{
             success: function(response) {
                 toastr.success('Datos grabados correctamente', msj_modulo)
                 $self.callback(response)
-                close_modal(_dir_submodulo_almacen_productos)
+                close_modal(_dir_submodulo_almacen_ingredientes)
             },
             complete: function() {},
             error: function(e) {
                 if (e.status == 422) { //Errores de Validacion
                     toastr.remove();
-                    limpieza(_dir_submodulo_almacen_productos)
+                    limpieza(_dir_submodulo_almacen_ingredientes)
                     $.each(e.responseJSON.errors, function(i, item) {
-                        $('#'+ _prefix_almacen_productos+ "_" + i ).addClass('is_invalid')
-                        $('#'+ _prefix_almacen_productos+ "_" + i ).attr('data-invalid', item)
+                        $('#'+ _prefix_almacen_ingredientes+ "_" + i ).addClass('is_invalid')
+                        $('#'+ _prefix_almacen_ingredientes+ "_" + i ).attr('data-invalid', item)
 
-                        $('.select2-' + _prefix_almacen_productos + "_" + i).addClass('select2-is_invalid');
-                        $('.select2-' + _prefix_almacen_productos + "_" + i).attr('data-invalid', item);
+                        $('.select2-' + _prefix_almacen_ingredientes + "_" + i).addClass('select2-is_invalid');
+                        $('.select2-' + _prefix_almacen_ingredientes + "_" + i).attr('data-invalid', item);
 
                     })
                 } else {
@@ -78,6 +78,6 @@ form.register(_dir_submodulo_almacen_productos,{
         })
     },
     callback: function(data) {
-        grilla.reload(_dir_submodulo_almacen_productos)
+        grilla.reload(_dir_submodulo_almacen_ingredientes)
     }
 })

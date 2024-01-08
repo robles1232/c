@@ -17,25 +17,36 @@
 
 					<div class="form-group form-row">
 
-						<div class="col-md-6">
-							<label for="{{$prefix}}_descripcion" class="col-form-label">Proveedor</label>
-							<input class="form-control form-control-sm" type="text" placeholder="Proveedor" id="{{$prefix}}_descripcion" name="descripcion">
+						<div class="col-md-12 d-flex">
+							<div style="width: 88%;" >
+								<label for="{{$prefix}}_ruc" class="col-form-label">Buscar Proveedor</label>
+								<input class="form-control form-control-sm" type="text" placeholder="Nro. RUC" id="{{$prefix}}_ruc" name="ruc">
+							</div>
+
+							<div style="width: 12%;" id="btn_buscar" class="mt-4" >
+								<button class="btn btn-icon btn-outline-primary borderrad_left0 hover_primary" onclick="search_proveedor(event)">
+										<i class="fe fe-search"></i> Buscar
+									</button>
+							</div>
+							
 						</div>
 
-						<div class="col-md-6">
-							<label for="{{$prefix}}_ruc" class="col-form-label">Ruc</label>
-							<input class="form-control form-control-sm" type="text" placeholder="Ruc" id="{{$prefix}}_ruc" name="ruc">
-						</div>
-
-						<div class="col-md-6">
-							<label for="{{$prefix}}_direccion" class="col-form-label">Dirección</label>
-							<input class="form-control form-control-sm" type="text" placeholder="Dirección" id="{{$prefix}}_direccion" name="direccion">
+						<div class="col-md-12">
+							<label for="{{$prefix}}_descripcion" class="col-form-label">Razón Social</label>
+							<input class="form-control form-control-sm" type="text" placeholder="Razón Social" id="{{$prefix}}_descripcion" name="descripcion" disabled>
 						</div>
 
 						<div class="col-md-6">
 							<label for="{{$prefix}}_telefono" class="col-form-label">Teléfono</label>
 							<input class="form-control form-control-sm" type="text" placeholder="Teléfono" id="{{$prefix}}_telefono" name="telefono">
 						</div>
+
+						<div class="col-md-6">
+							<label for="{{$prefix}}_direccion" class="col-form-label">Dirección</label>
+							<input class="form-control form-control-sm" type="text" placeholder="Dirección" id="{{$prefix}}_direccion" name="direccion" disabled>
+						</div>
+
+
 					</div>
 				</div>
 				<div class="modal-footer border-0">
